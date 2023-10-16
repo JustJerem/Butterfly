@@ -9,7 +9,6 @@ class HomeContract {
     sealed class Event {
         object RequestButterflies : Event()
         data class SearchButterflies(val query: String) : Event()
-        object ResetSearch : Event()
         object ToggleSearchBar : Event()
     }
 

@@ -33,13 +33,15 @@ class HomeViewModel @Inject constructor(
         when (event) {
             is HomeContract.Event.RequestButterflies -> requestButterflies()
             is HomeContract.Event.SearchButterflies -> filterButterflies(event.query)
-            is HomeContract.Event.ResetSearch -> resetSearch()
             is HomeContract.Event.ToggleSearchBar -> toggleSearchBarVisibility()
         }
     }
 
-    fun toggleSearchBarVisibility() {
+    private fun toggleSearchBarVisibility() {
         state = state.copy(isSearchBarVisible = !state.isSearchBarVisible)
+        if (!state.isSearchBarVisible) {
+            resetSearch()
+        }
     }
 
     private fun requestButterflies() {
