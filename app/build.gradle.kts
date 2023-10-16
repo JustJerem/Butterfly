@@ -1,9 +1,9 @@
 plugins {
     kotlin("kapt")
+    id("org.jetbrains.kotlin.plugin.serialization")
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("com.google.dagger.hilt.android")
-    id("kotlin-parcelize")
     id("com.google.devtools.ksp") version "1.7.0-1.0.6"
 }
 
@@ -28,7 +28,11 @@ android {
     productFlavors {
         create("dev") {
             dimension = "environment"
-            buildConfigField("String", "API_BASE_URL", "\"https://warm-butterfly.pockethost.io/api/collections/\"")
+            buildConfigField(
+                "String",
+                "API_BASE_URL",
+                "\"https://warm-butterfly.pockethost.io/api/\""
+            )
         }
         create("staging") {
             dimension = "environment"
@@ -106,6 +110,9 @@ dependencies {
     //Serialization - Moshi
     implementation("com.squareup.moshi:moshi-kotlin:1.14.0")
     implementation("com.squareup.retrofit2:converter-moshi:2.9.0")
+
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.3")
+
 
     //Network Retrofit
     implementation("com.squareup.retrofit2:retrofit:2.9.0")

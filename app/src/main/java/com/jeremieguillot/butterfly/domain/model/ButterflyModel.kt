@@ -1,5 +1,8 @@
 package com.jeremieguillot.butterfly.domain.model
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class ButterflyModel(
     val collectionId: String,
     val collectionName: String,

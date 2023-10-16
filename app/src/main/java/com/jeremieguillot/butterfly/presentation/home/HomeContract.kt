@@ -8,6 +8,9 @@ class HomeContract {
 
     sealed class Event {
         object RequestButterflies : Event()
+        data class SearchButterflies(val query: String) : Event()
+        object ResetSearch : Event()
+        object ToggleSearchBar : Event()
     }
 
     sealed class Error {
@@ -20,6 +23,9 @@ class HomeContract {
 
     data class State(
         val isViewLoading: Boolean = true,
-        val butterflies: List<ButterflyModel> = emptyList()
+        val isSearchBarVisible: Boolean = false,
+        val searchText: String = "",
+        val butterflies: List<ButterflyModel> = emptyList(),
+        val filteredButterflies: List<ButterflyModel> = emptyList()
     )
 }

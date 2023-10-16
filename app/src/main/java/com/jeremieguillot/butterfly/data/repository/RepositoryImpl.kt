@@ -19,7 +19,7 @@ class ButterflyRepositoryImpl(
         if (networkHandler.isNetworkAvailable()) {
             try {
                 val response = apiClient.getButterflies()
-                return response.map { it.toDomainModel() }
+                return response.items.map { it.toDomainModel() }
             } catch (e: Exception) {
                 throw Failure.ServerError(e.message)
             }

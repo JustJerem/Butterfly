@@ -29,10 +29,17 @@ class HomeViewModel @Inject constructor(
         onEvent(HomeContract.Event.RequestButterflies)
     }
 
-    private fun onEvent(event: HomeContract.Event) {
+    fun onEvent(event: HomeContract.Event) {
         when (event) {
             is HomeContract.Event.RequestButterflies -> requestButterflies()
+            is HomeContract.Event.SearchButterflies -> filterButterflies(event.query)
+            is HomeContract.Event.ResetSearch -> resetSearch()
+            is HomeContract.Event.ToggleSearchBar -> toggleSearchBarVisibility()
         }
+    }
+
+    fun toggleSearchBarVisibility() {
+        state = state.copy(isSearchBarVisible = !state.isSearchBarVisible)
     }
 
     private fun requestButterflies() {
@@ -44,8 +51,27 @@ class HomeViewModel @Inject constructor(
                 }
 
                 Result.Loading -> state.copy(isViewLoading = true)
-                is Result.Success -> state.copy(isViewLoading = false, butterflies = it.value)
+                is Result.Success -> state.copy(
+                    isViewLoading = false,
+                    butterflies = it.value,
+                    filteredButterflies = it.value
+                )
             }
         }.launchIn(viewModelScope)
+    }
+
+
+    private fun filterButterflies(query: String) {
+        // Filtrer la liste des papillons en fonction du texte de recherche
+        val filteredButterflies = if (query.isNotBlank()) {
+            state.butterflies.filter { it.commonName.contains(query, ignoreCase = true) }
+        } else {
+            state.butterflies
+        }
+        state = state.copy(filteredButterflies = filteredButterflies, searchText = query)
+    }
+
+    private fun resetSearch() {
+        state = state.copy(filteredButterflies = state.butterflies, searchText = "")
     }
 }

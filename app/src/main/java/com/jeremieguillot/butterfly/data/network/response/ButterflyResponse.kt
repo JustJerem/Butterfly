@@ -1,6 +1,7 @@
 package com.jeremieguillot.butterfly.data.network.response
 
 
+import com.jeremieguillot.butterfly.data.network.util.PockethostHelper
 import com.jeremieguillot.butterfly.domain.model.ButterflyModel
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
@@ -71,16 +72,16 @@ data class ButterflyResponse(
             generationsPerYear = generationsPerYear,
             hostPlants = hostPlants,
             id = id,
-            illustration = illustration,
+            illustration = illustration.map { PockethostHelper.getFilePath(collectionId, id, it) },
             latinName = latinName,
-            map = map,
+            map = PockethostHelper.getFilePath(collectionId, id, map),
             maxAltitude = maxAltitude,
             maxWingspan = maxWingspan,
             minAltitude = minAltitude,
             minWingspan = minWingspan,
             naturalHabitats = naturalHabitats,
             photoAuthor = photoAuthor,
-            photos = photos,
+            photos = photos.map { PockethostHelper.getFilePath(collectionId, id, it) },
             possibleConfusions = possibleConfusions,
             protectionStatus = protectionStatus,
             updated = updated,
