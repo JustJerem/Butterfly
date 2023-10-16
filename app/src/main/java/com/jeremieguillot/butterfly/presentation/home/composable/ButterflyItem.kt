@@ -1,7 +1,6 @@
 package com.jeremieguillot.butterfly.presentation.home.composable
 
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -18,7 +17,7 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import coil.compose.rememberAsyncImagePainter
+import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.jeremieguillot.butterfly.domain.model.ButterflyModel
 
@@ -37,24 +36,18 @@ fun ButterflyItem(butterfly: ButterflyModel, onTap: () -> Unit) {
                 .padding(8.dp)
         ) {
 
-            val painter = rememberAsyncImagePainter(
-                ImageRequest.Builder(LocalContext.current)
-                    .data(
-                        data = butterfly.photos.firstOrNull()
-                    )
-                    .apply(block = fun ImageRequest.Builder.() {
-                        crossfade(true)
-                    })
-                    .build()
-            )
-            Image(
-                painter = painter,
+            AsyncImage(
+                model = ImageRequest.Builder(LocalContext.current)
+                    .data(butterfly.photos.firstOrNull())
+                    .crossfade(true)
+                    .build(),
+                //placeholder = painterResource(R.drawable.placeholder),
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(200.dp)
-                    .clip(MaterialTheme.shapes.medium)
+                    .clip(MaterialTheme.shapes.medium),
             )
 
             Text(text = butterfly.commonName, style = typography.bodyLarge)

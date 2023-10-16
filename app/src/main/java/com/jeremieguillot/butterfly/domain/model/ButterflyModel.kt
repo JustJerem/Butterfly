@@ -28,5 +28,6 @@ data class ButterflyModel(
     val possibleConfusions: String,
     val protectionStatus: String,
     val updated: String,
-    val winteringStage: List<String>
+    val winteringStage: List<String>,
+    val carousel: List<String>
 )

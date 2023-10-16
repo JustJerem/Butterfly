@@ -60,6 +60,10 @@ data class ButterflyResponse(
     val winteringStage: List<String>
 ) {
     fun toDomainModel(): ButterflyModel {
+        val illustrationsLink =
+            illustration.map { PockethostHelper.getFilePath(collectionId, id, it) }
+        val mapLink = PockethostHelper.getFilePath(collectionId, id, map)
+        val photosLink = photos.map { PockethostHelper.getFilePath(collectionId, id, it) }
         return ButterflyModel(
             collectionId = collectionId,
             collectionName = collectionName,
@@ -72,20 +76,21 @@ data class ButterflyResponse(
             generationsPerYear = generationsPerYear,
             hostPlants = hostPlants,
             id = id,
-            illustration = illustration.map { PockethostHelper.getFilePath(collectionId, id, it) },
+            illustration = illustrationsLink,
             latinName = latinName,
-            map = PockethostHelper.getFilePath(collectionId, id, map),
+            map = mapLink,
             maxAltitude = maxAltitude,
             maxWingspan = maxWingspan,
             minAltitude = minAltitude,
             minWingspan = minWingspan,
             naturalHabitats = naturalHabitats,
             photoAuthor = photoAuthor,
-            photos = photos.map { PockethostHelper.getFilePath(collectionId, id, it) },
+            photos = photosLink,
             possibleConfusions = possibleConfusions,
             protectionStatus = protectionStatus,
             updated = updated,
             winteringStage = winteringStage,
+            carousel = photosLink + illustrationsLink + mapLink
         )
     }
 }

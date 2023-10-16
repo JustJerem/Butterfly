@@ -15,6 +15,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -98,7 +99,11 @@ fun HomeScreen(
                     IconButton(
                         onClick = { onEvent(HomeContract.Event.ToggleSearchBar) }
                     ) {
-                        Icon(imageVector = Icons.Default.Search, contentDescription = null)
+                        Icon(
+                            imageVector =
+                            if (state.isSearchBarVisible) Icons.Default.Close else Icons.Default.Search,
+                            contentDescription = null
+                        )
                     }
                 }
             )
