@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Butterfly</string>
+    <string name="general_unknown_issue">An unknown error has occurred</string>
+    <string name="home_screen_title">Butterflies</string>
+</resources>
