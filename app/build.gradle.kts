@@ -1,10 +1,10 @@
 plugins {
+    kotlin("kapt")
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
-    id("kotlin-kapt")
     id("com.google.dagger.hilt.android")
     id("kotlin-parcelize")
-    id("com.google.devtools.ksp") version "1.8.21-1.0.11"
+    id("com.google.devtools.ksp") version "1.7.0-1.0.6"
 }
 
 android {
@@ -25,7 +25,6 @@ android {
     }
 
     flavorDimensions += "environment"
-    buildFeatures.buildConfig = true
     productFlavors {
         create("dev") {
             dimension = "environment"
@@ -59,26 +58,21 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.4.3"
+        kotlinCompilerExtensionVersion = "1.2.0"
     }
-    packaging {
-        resources {
-            excludes += "/META-INF/{AL2.0,LGPL2.1}"
-        }
+    packagingOptions {
+        resources.excludes.add("META-INF/*")
     }
 }
 
 kotlin {
-    sourceSets {
-        debug {
-            kotlin.srcDir("build/generated/ksp/devDebug/kotlin")
-        }
-        release {
-            kotlin.srcDir("build/generated/ksp/release/kotlin")
-        }
+    sourceSets.configureEach {
+        kotlin.srcDir("$buildDir/generated/ksp/$name/kotlin/")
     }
+
 }
 
 dependencies {
@@ -105,9 +99,8 @@ dependencies {
     implementation("androidx.compose.material:material-icons-extended:$compose_version")
 
     //Hilt - Dependency injection
-    implementation("com.google.dagger:hilt-android:2.42")
-    ksp("com.google.dagger:hilt-compiler:2.42")
-    ksp("androidx.hilt:hilt-compiler:1.0.0")
+    implementation("com.google.dagger:hilt-android:2.44")
+    kapt("com.google.dagger:hilt-android-compiler:2.44")
     implementation("androidx.hilt:hilt-navigation-compose:1.1.0-alpha01")
 
     //Serialization - Moshi

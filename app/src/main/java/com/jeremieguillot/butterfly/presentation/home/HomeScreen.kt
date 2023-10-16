@@ -2,6 +2,7 @@
     ExperimentalMaterial3Api::class, ExperimentalMaterial3Api::class,
     ExperimentalMaterial3Api::class
 )
+
 package com.jeremieguillot.butterfly.presentation.home
 
 import androidx.compose.foundation.layout.Arrangement
@@ -27,10 +28,24 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.jeremieguillot.butterfly.R
+import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.annotation.RootNavGraph
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
+
+
+@Destination
+@RootNavGraph(start = true)
+@Composable
+fun HomeScreen(
+    viewModel: HomeViewModel = hiltViewModel(),
+    navigator: DestinationsNavigator
+) {
+    HomeScreen(viewModel.state, navigator, viewModel.errorEvents)
+}
 
 @Composable
 fun HomeScreen(
@@ -73,11 +88,11 @@ fun HomeScreen(
             ) {
 
                 item {
-                   Text(state.butterflies.size.toString())
+                    Text(state.butterflies.size.toString())
                 }
             }
         }
-        if (state.isViewLoading){
+        if (state.isViewLoading) {
             CircularProgressIndicator()
         }
     }

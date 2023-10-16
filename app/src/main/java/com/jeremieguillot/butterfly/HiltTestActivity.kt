@@ -20,5 +20,5 @@ import androidx.activity.ComponentActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 //Used for test only
-@AndroidEntryPoint
-class HiltTestActivity : ComponentActivity()
+//@AndroidEntryPoint
+//class HiltTestActivity : ComponentActivity()
