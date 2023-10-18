@@ -1,8 +1,10 @@
 package com.jeremieguillot.butterfly.di
 
 import android.content.Context
+import com.jeremieguillot.butterfly.data.local.ButterflyManagerImpl
 import com.jeremieguillot.butterfly.data.network.client.ApiClient
 import com.jeremieguillot.butterfly.data.repository.ButterflyRepositoryImpl
+import com.jeremieguillot.butterfly.domain.repository.ButterflyManager
 import com.jeremieguillot.butterfly.domain.repository.ButterflyRepository
 import com.jeremieguillot.olympicgame.data.network.util.NetworkHandlerImpl
 import dagger.Module
@@ -20,11 +22,20 @@ object DataModule {
     fun provideAthleteRepository(
         networkHandler: NetworkHandlerImpl,
         apiClient: ApiClient,
-    ) : ButterflyRepository {
+        butterflyManager: ButterflyManager
+    ): ButterflyRepository {
         return ButterflyRepositoryImpl(
             networkHandler,
-            apiClient
+            apiClient,
+            butterflyManager
         )
+    }
+
+
+    @Singleton
+    @Provides
+    fun providesButterfliesManager(): ButterflyManager {
+        return ButterflyManagerImpl()
     }
 
     @Singleton

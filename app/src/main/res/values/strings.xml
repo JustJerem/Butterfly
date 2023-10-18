@@ -2,4 +2,17 @@
     <string name="app_name">Butterfly</string>
     <string name="general_unknown_issue">An unknown error has occurred</string>
     <string name="home_screen_title">Butterflies</string>
+
+    <string name="january_shortname">Jan</string>
+    <string name="february_shortname">Fev</string>
+    <string name="march_shortname">March</string>
+    <string name="april_shortname">Apr</string>
+    <string name="may_shortname">May</string>
+    <string name="june_shortname">June</string>
+    <string name="july_shortname">July</string>
+    <string name="august_shortname">Aug</string>
+    <string name="september_shortname">Sept</string>
+    <string name="october_shortname">Oct</string>
+    <string name="november_shortname">Nov</string>
+    <string name="december_shortname">Dec</string>
 </resources>

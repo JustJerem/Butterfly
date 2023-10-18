@@ -4,6 +4,8 @@ package com.jeremieguillot.butterfly.data.network.response
 import com.jeremieguillot.butterfly.data.network.util.PockethostHelper
 import com.jeremieguillot.butterfly.domain.model.ButterflyModel
 import com.jeremieguillot.butterfly.domain.model.ConservationStatus
+import com.jeremieguillot.butterfly.domain.model.MonthEnum
+import com.jeremieguillot.butterfly.domain.model.VisibleMonth
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
@@ -66,6 +68,8 @@ data class ButterflyResponse(
         val mapLink = PockethostHelper.getFilePath(collectionId, id, map)
         val photosLink = photos.map { PockethostHelper.getFilePath(collectionId, id, it) }
         val status = ConservationStatus.values().first { it.name == conservationStatusFrance }
+        val visibleMonth = getVisibilityMonth(flightPeriod)
+
         return ButterflyModel(
             collectionId = collectionId,
             collectionName = collectionName,
@@ -73,7 +77,7 @@ data class ButterflyResponse(
             conservationStatusFrance = status,
             created = created,
             family = family,
-            flightPeriod = flightPeriod,
+            flightPeriod = visibleMonth,
             frequency = frequency,
             generationsPerYear = generationsPerYear,
             hostPlants = hostPlants,
@@ -94,5 +98,11 @@ data class ButterflyResponse(
             winteringStage = winteringStage,
             carousel = photosLink + illustrationsLink + mapLink
         )
+    }
+
+    private fun getVisibilityMonth(flightPeriod: List<String>): List<VisibleMonth> {
+        return MonthEnum.values().map {
+            VisibleMonth(nameRes = it.shortName, isValidated = flightPeriod.contains(it.fullName))
+        }
     }
 }

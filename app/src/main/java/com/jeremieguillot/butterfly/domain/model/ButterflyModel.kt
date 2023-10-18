@@ -10,7 +10,7 @@ data class ButterflyModel(
     val conservationStatusFrance: ConservationStatus,
     val created: String,
     val family: String,
-    val flightPeriod: List<String>,
+    val flightPeriod: List<VisibleMonth>,
     val frequency: String,
     val generationsPerYear: Int,
     val hostPlants: List<String>,

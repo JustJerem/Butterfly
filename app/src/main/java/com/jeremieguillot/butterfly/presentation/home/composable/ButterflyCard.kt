@@ -6,13 +6,14 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Card
+import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontStyle
@@ -24,12 +25,13 @@ import com.jeremieguillot.butterfly.domain.model.ButterflyModel
 @Composable
 fun ButterflyCard(butterfly: ButterflyModel, onTap: () -> Unit) {
 
-    Card(modifier = Modifier.clickable { onTap() }) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-
-        ) {
+    val imageHeight = 150.dp
+    ElevatedCard(modifier = Modifier
+        .clickable { onTap() }
+        .fillMaxWidth()
+        .height(imageHeight + 85.dp)
+    ) {
+        Column {
 
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
@@ -38,12 +40,12 @@ fun ButterflyCard(butterfly: ButterflyModel, onTap: () -> Unit) {
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(200.dp)
+                    .height(imageHeight)
                     .clip(MaterialTheme.shapes.medium),
             )
             Column(
                 modifier = Modifier
-                    .padding(top = 8.dp, bottom = 16.dp, start = 8.dp)
+                    .padding(top = 8.dp, bottom = 8.dp, start = 8.dp)
                     .fillMaxWidth(),
             ) {
 
@@ -51,6 +53,7 @@ fun ButterflyCard(butterfly: ButterflyModel, onTap: () -> Unit) {
                 Text(
                     text = butterfly.latinName,
                     style = typography.labelLarge,
+                    color = Color.Gray,
                     fontStyle = FontStyle.Italic
                 )
             }

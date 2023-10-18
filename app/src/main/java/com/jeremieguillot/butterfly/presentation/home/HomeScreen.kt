@@ -7,13 +7,16 @@ package com.jeremieguillot.butterfly.presentation.home
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
@@ -32,6 +35,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
@@ -129,8 +133,7 @@ fun HomeScreen(
                         onClick = { onEvent(HomeContract.Event.ToggleSearchBar) }
                     ) {
                         Icon(
-                            imageVector =
-                            if (state.isSearchBarVisible) Icons.Default.Close else Icons.Default.Search,
+                            imageVector = if (state.isSearchBarVisible) Icons.Default.Close else Icons.Default.Search,
                             contentDescription = null
                         )
                     }
@@ -141,10 +144,12 @@ fun HomeScreen(
     ) {
 
         if (!state.isViewLoading) {
-            LazyColumn(
+            LazyVerticalGrid(
+                columns = GridCells.Fixed(2),
                 modifier = Modifier.padding(it),
                 verticalArrangement = Arrangement.spacedBy(16.dp),
-                contentPadding = PaddingValues(16.dp),
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
             ) {
                 items(state.filteredButterflies) { butterfly ->
                     ButterflyCard(butterfly = butterfly) {
@@ -154,9 +159,17 @@ fun HomeScreen(
                 }
             }
 
-        }
-        if (state.isViewLoading) {
-            CircularProgressIndicator()
+        } else {
+            Box {
+                Column(
+                    modifier = Modifier.fillMaxSize(),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                ) {
+                    CircularProgressIndicator()
+                }
+            }
+
         }
     }
 }

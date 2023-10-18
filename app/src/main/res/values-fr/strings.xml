@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">Papillon</string>
+    <string name="general_unknown_issue">Une erreur inconnue s\'est produite</string>
+    <string name="home_screen_title">Papillons</string>
+
+    <string name="january_shortname">Jan</string>
+    <string name="february_shortname">Fév</string>
+    <string name="march_shortname">Mars</string>
+    <string name="april_shortname">Avr</string>
+    <string name="may_shortname">Mai</string>
+    <string name="june_shortname">Juin</string>
+    <string name="july_shortname">Juil</string>
+    <string name="august_shortname">Août</string>
+    <string name="september_shortname">Sept</string>
+    <string name="october_shortname">Oct</string>
+    <string name="november_shortname">Nov</string>
+    <string name="december_shortname">Déc</string>
+</resources>
