@@ -7,7 +7,7 @@ data class ButterflyModel(
     val collectionId: String,
     val collectionName: String,
     val commonName: String,
-    val conservationStatusFrance: String,
+    val conservationStatusFrance: ConservationStatus,
     val created: String,
     val family: String,
     val flightPeriod: List<String>,

@@ -4,6 +4,7 @@ package com.jeremieguillot.butterfly.presentation.detail
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.pager.HorizontalPager
@@ -38,12 +39,17 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.jeremieguillot.butterfly.domain.model.ButterflyModel
+import com.jeremieguillot.butterfly.domain.model.ConservationStatus
+import com.jeremieguillot.butterfly.presentation.destinations.ZoomableScreenDestination
+import com.jeremieguillot.butterfly.presentation.detail.composable.ConservationStatusLogo
 import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
 @Destination
 @Composable
 fun DetailScreen(
-    butterfly: ButterflyModel
+    butterfly: ButterflyModel,
+    navigator: DestinationsNavigator
 ) {
 
     LazyColumn(
@@ -61,7 +67,6 @@ fun DetailScreen(
 
                 HorizontalPager(state = pagerState) { page ->
 
-
                     AsyncImage(
                         model = ImageRequest.Builder(LocalContext.current)
                             .data(butterfly.carousel[page])
@@ -70,6 +75,7 @@ fun DetailScreen(
                         contentDescription = null,
                         contentScale = ContentScale.Crop,
                         modifier = Modifier
+                            .clickable { navigator.navigate(ZoomableScreenDestination(butterfly.carousel[page])) }
                             .fillMaxWidth()
                             .height(200.dp)
                             .clip(MaterialTheme.shapes.medium),
@@ -98,7 +104,6 @@ fun DetailScreen(
                         }
                     }
                 }
-
             }
         }
         item {
@@ -110,7 +115,7 @@ fun DetailScreen(
             )
             ButterflyDetailItem(Icons.Default.Language, "Nom latin", butterfly.latinName)
             ButterflyDetailItem(Icons.Default.FamilyRestroom, "Famille", butterfly.family)
-            ButterflyDetailItem(
+            ButterflyDetailStatusItem(
                 Icons.Default.Policy,
                 "Statut de conservation en France",
                 butterfly.conservationStatusFrance
@@ -197,6 +202,36 @@ fun ButterflyDetailItem(icon: ImageVector, description: String, info: String) {
             Text(
                 text = info,
             )
+        }
+    }
+}
+
+@Composable
+fun ButterflyDetailStatusItem(icon: ImageVector, description: String, status: ConservationStatus) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(8.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Icon(
+            modifier = Modifier.wrapContentSize(),
+            imageVector = icon,
+            contentDescription = null,
+            tint = Color.Gray
+        )
+        Spacer(
+            modifier = Modifier
+                .width(16.dp)
+                .background(Color.Red)
+        )
+        Column {
+            Text(
+                text = description,
+                fontSize = 14.sp,
+                fontWeight = FontWeight.Bold
+            )
+            ConservationStatusLogo(status = status)
         }
     }
 }

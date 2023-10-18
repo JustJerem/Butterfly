@@ -64,9 +64,13 @@ class HomeViewModel @Inject constructor(
 
 
     private fun filterButterflies(query: String) {
-        // Filtrer la liste des papillons en fonction du texte de recherche
         val filteredButterflies = if (query.isNotBlank()) {
-            state.butterflies.filter { it.commonName.contains(query, ignoreCase = true) }
+            state.butterflies.filter {
+                it.commonName.contains(
+                    query,
+                    ignoreCase = true
+                ) or it.latinName.contains(query, ignoreCase = true)
+            }
         } else {
             state.butterflies
         }

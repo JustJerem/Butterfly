@@ -3,6 +3,7 @@ package com.jeremieguillot.butterfly.data.network.response
 
 import com.jeremieguillot.butterfly.data.network.util.PockethostHelper
 import com.jeremieguillot.butterfly.domain.model.ButterflyModel
+import com.jeremieguillot.butterfly.domain.model.ConservationStatus
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
@@ -64,11 +65,12 @@ data class ButterflyResponse(
             illustration.map { PockethostHelper.getFilePath(collectionId, id, it) }
         val mapLink = PockethostHelper.getFilePath(collectionId, id, map)
         val photosLink = photos.map { PockethostHelper.getFilePath(collectionId, id, it) }
+        val status = ConservationStatus.values().first { it.name == conservationStatusFrance }
         return ButterflyModel(
             collectionId = collectionId,
             collectionName = collectionName,
             commonName = commonName,
-            conservationStatusFrance = conservationStatusFrance,
+            conservationStatusFrance = status,
             created = created,
             family = family,
             flightPeriod = flightPeriod,
