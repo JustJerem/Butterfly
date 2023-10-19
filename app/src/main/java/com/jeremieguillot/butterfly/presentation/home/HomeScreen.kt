@@ -152,7 +152,11 @@ fun HomeScreen(
                 contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
             ) {
                 items(state.filteredButterflies) { butterfly ->
-                    ButterflyCard(butterfly = butterfly) {
+                    ButterflyCard(
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        butterfly = butterfly
+                    ) {
                         navigator.navigate(DetailScreenDestination(butterfly))
                     }
                     Spacer(modifier = Modifier.height(16.dp))

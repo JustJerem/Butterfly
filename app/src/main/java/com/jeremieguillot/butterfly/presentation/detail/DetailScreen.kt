@@ -8,6 +8,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -18,6 +19,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
@@ -57,9 +60,11 @@ import coil.request.ImageRequest
 import com.jeremieguillot.butterfly.domain.model.ButterflyModel
 import com.jeremieguillot.butterfly.domain.model.ConservationStatus
 import com.jeremieguillot.butterfly.domain.model.VisibleMonth
+import com.jeremieguillot.butterfly.presentation.destinations.DetailScreenDestination
 import com.jeremieguillot.butterfly.presentation.destinations.ZoomableScreenDestination
 import com.jeremieguillot.butterfly.presentation.detail.composable.ConservationStatusLogo
 import com.jeremieguillot.butterfly.presentation.detail.composable.YearlyCalendar
+import com.jeremieguillot.butterfly.presentation.home.composable.ButterflyCard
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
@@ -217,6 +222,13 @@ fun DetailScreen(
                     "Auteur de la photo",
                     butterfly.photoAuthor
                 )
+
+//                ButterflyConfusionDetailItem(
+//                    Icons.Default.ImageSearch,
+//                    "Confusion possible",
+//                    listOf(butterfly, butterfly, butterfly),
+//                    navigator
+//                )
             }
         }
     }
@@ -285,6 +297,36 @@ fun ButterflyVisibilityDetailItem(
                 fontWeight = FontWeight.Bold
             )
             YearlyCalendar(visibleMonths)
+        }
+    }
+}
+
+@Composable
+fun ButterflyConfusionDetailItem(
+    icon: ImageVector,
+    description: String,
+    butterflies: List<ButterflyModel>,
+    navigator: DestinationsNavigator
+) {
+
+    Column {
+        Text(
+            modifier = Modifier.padding(bottom = 8.dp, start = 48.dp),
+            text = description,
+            fontSize = 14.sp,
+            fontWeight = FontWeight.Bold
+        )
+        LazyRow(
+            contentPadding = PaddingValues(start = 48.dp),
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            items(butterflies) {
+                ButterflyCard(
+                    modifier = Modifier
+                        .width(120.dp),
+                    butterfly = it
+                ) { navigator.navigate(DetailScreenDestination(it)) }
+            }
         }
     }
 }

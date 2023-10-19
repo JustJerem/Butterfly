@@ -23,12 +23,11 @@ import coil.request.ImageRequest
 import com.jeremieguillot.butterfly.domain.model.ButterflyModel
 
 @Composable
-fun ButterflyCard(butterfly: ButterflyModel, onTap: () -> Unit) {
+fun ButterflyCard(modifier: Modifier, butterfly: ButterflyModel, onTap: () -> Unit) {
 
     val imageHeight = 150.dp
-    ElevatedCard(modifier = Modifier
+    ElevatedCard(modifier = modifier
         .clickable { onTap() }
-        .fillMaxWidth()
         .height(imageHeight + 85.dp)
     ) {
         Column {
