@@ -23,6 +23,7 @@ data class ButterflyModel(
     val minAltitude: Int,
     val minWingspan: Int,
     val naturalHabitats: List<String>,
+    val confusionButterfliesId: List<String>,
     val photoAuthor: String,
     val photos: List<String>,
     val possibleConfusions: String,

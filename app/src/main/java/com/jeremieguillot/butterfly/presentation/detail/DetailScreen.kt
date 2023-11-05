@@ -223,12 +223,15 @@ fun DetailScreen(
                     butterfly.photoAuthor
                 )
 
-//                ButterflyConfusionDetailItem(
-//                    Icons.Default.ImageSearch,
-//                    "Confusion possible",
-//                    listOf(butterfly, butterfly, butterfly),
-//                    navigator
-//                )
+                if (confusionButterfly.isNotEmpty()) {
+                    ButterflyConfusionDetailItem(
+                        "Confusion possible",
+                        confusionButterfly,
+                        navigator
+                    )
+
+                    Spacer(modifier = Modifier.padding(8.dp))
+                }
             }
         }
     }
@@ -303,7 +306,6 @@ fun ButterflyVisibilityDetailItem(
 
 @Composable
 fun ButterflyConfusionDetailItem(
-    icon: ImageVector,
     description: String,
     butterflies: List<ButterflyModel>,
     navigator: DestinationsNavigator
@@ -325,7 +327,9 @@ fun ButterflyConfusionDetailItem(
                     modifier = Modifier
                         .width(120.dp),
                     butterfly = it
-                ) { navigator.navigate(DetailScreenDestination(it)) }
+                ) {
+                    //navigator.navigate(DetailScreenDestination(it))
+                }
             }
         }
     }

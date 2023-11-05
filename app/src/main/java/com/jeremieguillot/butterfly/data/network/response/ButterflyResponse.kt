@@ -49,6 +49,8 @@ data class ButterflyResponse(
     val minWingspan: Int,
     @Json(name = "natural_habitats")
     val naturalHabitats: List<String>,
+    @Json(name = "butterfly_confusion")
+    val confusionButterfliesId: List<String>,
     @Json(name = "photo_author")
     val photoAuthor: String,
     @Json(name = "photos")
@@ -90,6 +92,7 @@ data class ButterflyResponse(
             minAltitude = minAltitude,
             minWingspan = minWingspan,
             naturalHabitats = naturalHabitats,
+            confusionButterfliesId = confusionButterfliesId,
             photoAuthor = photoAuthor,
             photos = photosLink,
             possibleConfusions = possibleConfusions,

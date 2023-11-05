@@ -9,7 +9,12 @@ class HomeContract {
     sealed class Event {
         object RequestButterflies : Event()
         data class SearchButterflies(val query: String) : Event()
+        data class SetSelectedIndexButterfly(val index: Int) : Event()
         object ToggleSearchBar : Event()
+    }
+
+    sealed class Navigation {
+        object OpenDetail : Navigation()
     }
 
     sealed class Error {
@@ -25,6 +30,10 @@ class HomeContract {
         val isSearchBarVisible: Boolean = false,
         val searchText: String = "",
         val butterflies: List<ButterflyModel> = emptyList(),
-        val filteredButterflies: List<ButterflyModel> = emptyList()
+        val filteredButterflies: List<ButterflyModel> = emptyList(),
+
+        //Detail
+        val selectedIndexButterfly: Int = 0,
+        val confusionButterflies: List<ButterflyModel> = emptyList(),
     )
 }
