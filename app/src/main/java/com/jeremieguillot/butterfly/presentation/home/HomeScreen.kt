@@ -16,7 +16,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
@@ -45,6 +44,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.paging.LoadState
+import androidx.paging.compose.collectAsLazyPagingItems
 import com.jeremieguillot.butterfly.R
 import com.jeremieguillot.butterfly.presentation.destinations.DetailScreenDestination
 import com.jeremieguillot.butterfly.presentation.home.composable.ButterflyCard
@@ -142,6 +143,7 @@ fun HomeScreen(
         },
         snackbarHost = { SnackbarHost(snackbarHostState) },
     ) {
+        val butterfly = state.butterflies.collectAsLazyPagingItems()
 
         if (!state.isViewLoading) {
             LazyVerticalGrid(
@@ -151,15 +153,25 @@ fun HomeScreen(
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
                 contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
             ) {
-                items(state.filteredButterflies) { butterfly ->
-                    ButterflyCard(
-                        modifier = Modifier
-                            .fillMaxWidth(),
-                        butterfly = butterfly
-                    ) {
-                        navigator.navigate(DetailScreenDestination(butterfly))
+
+                if (butterfly.loadState.refresh is LoadState.Loading) {
+                    item {
+                        CircularProgressIndicator()
                     }
-                    Spacer(modifier = Modifier.height(16.dp))
+                } else {
+
+                    items(butterfly.itemCount) { index ->
+                        val item = butterfly[index] ?: return@items
+
+                        ButterflyCard(
+                            modifier = Modifier
+                                .fillMaxWidth(),
+                            butterfly = item
+                        ) {
+                            navigator.navigate(DetailScreenDestination(item))
+                        }
+                        Spacer(modifier = Modifier.height(16.dp))
+                    }
                 }
             }
 

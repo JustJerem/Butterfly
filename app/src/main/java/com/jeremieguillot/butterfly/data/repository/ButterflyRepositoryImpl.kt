@@ -1,11 +1,17 @@
 package com.jeremieguillot.butterfly.data.repository
 
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
 import com.jeremieguillot.butterfly.data.network.client.ApiClient
+import com.jeremieguillot.butterfly.data.paging.ButterflyPagingSource
 import com.jeremieguillot.butterfly.domain.interactors.common.Failure
 import com.jeremieguillot.butterfly.domain.model.ButterflyModel
 import com.jeremieguillot.butterfly.domain.repository.ButterflyManager
 import com.jeremieguillot.butterfly.domain.repository.ButterflyRepository
 import com.jeremieguillot.olympicgame.data.network.util.NetworkHandler
+
+
+const val PAGE_SIZE = 30
 
 class ButterflyRepositoryImpl(
     private val networkHandler: NetworkHandler,
@@ -14,15 +20,27 @@ class ButterflyRepositoryImpl(
 ) : ButterflyRepository {
 
     //Get All Butterflies from the RemoteData API
-    override suspend fun getButterflies(): List<ButterflyModel> {
+    override suspend fun getButterflies(): Pager<Int, ButterflyModel> {
         if (networkHandler.isNetworkAvailable()) {
             try {
-                return butterflyManagerImp.getButterflies().ifEmpty {
-                    val response = apiClient.getButterflies()
-                    val butterfliesModel = response.items.map { it.toDomainModel() }
-                    butterflyManagerImp.setButterflies(butterfliesModel)
-                    butterfliesModel
-                }
+
+                return Pager(
+                    config = PagingConfig(
+                        pageSize = PAGE_SIZE,
+                    ),
+                    pagingSourceFactory = {
+                        ButterflyPagingSource(
+                            apiClient = apiClient,
+                        )
+                    }
+                )
+
+//                return butterflyManagerImp.getButterflies().ifEmpty {
+//                    val response = apiClient.getButterflies()
+//                    val butterfliesModel = response.items.map { it.toDomainModel() }
+//                    butterflyManagerImp.setButterflies(butterfliesModel)
+//                    butterfliesModel
+//                }
             } catch (e: Exception) {
                 throw Failure.ServerError(e.message)
             }

@@ -123,6 +123,7 @@ dependencies {
     val paging_version = "3.1.1"
     implementation("androidx.paging:paging-runtime:$paging_version")
     implementation("androidx.paging:paging-compose:1.0.0-alpha18")
+    implementation("androidx.paging:paging-common-ktx:$paging_version")
 
 
     //Nav

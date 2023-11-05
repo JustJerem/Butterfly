@@ -1,7 +1,8 @@
 package com.jeremieguillot.butterfly.domain.repository
 
+import androidx.paging.Pager
 import com.jeremieguillot.butterfly.domain.model.ButterflyModel
 
 interface ButterflyRepository {
-    suspend fun getButterflies(): List<ButterflyModel>
+    suspend fun getButterflies(): Pager<Int, ButterflyModel>
 }

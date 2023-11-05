@@ -60,7 +60,6 @@ import coil.request.ImageRequest
 import com.jeremieguillot.butterfly.domain.model.ButterflyModel
 import com.jeremieguillot.butterfly.domain.model.ConservationStatus
 import com.jeremieguillot.butterfly.domain.model.VisibleMonth
-import com.jeremieguillot.butterfly.presentation.destinations.DetailScreenDestination
 import com.jeremieguillot.butterfly.presentation.destinations.ZoomableScreenDestination
 import com.jeremieguillot.butterfly.presentation.detail.composable.ConservationStatusLogo
 import com.jeremieguillot.butterfly.presentation.detail.composable.YearlyCalendar
@@ -72,7 +71,7 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 @Composable
 fun DetailScreen(
     butterfly: ButterflyModel,
-    navigator: DestinationsNavigator
+    navigator: DestinationsNavigator,
 ) {
 
     Scaffold(
@@ -223,15 +222,15 @@ fun DetailScreen(
                     butterfly.photoAuthor
                 )
 
-                if (confusionButterfly.isNotEmpty()) {
-                    ButterflyConfusionDetailItem(
-                        "Confusion possible",
-                        confusionButterfly,
-                        navigator
-                    )
-
-                    Spacer(modifier = Modifier.padding(8.dp))
-                }
+//                if (confusionButterfly.isNotEmpty()) {
+//                    ButterflyConfusionDetailItem(
+//                        "Confusion possible",
+//                        confusionButterfly,
+//                        navigator
+//                    )
+//
+//                    Spacer(modifier = Modifier.padding(8.dp))
+//                }
             }
         }
     }

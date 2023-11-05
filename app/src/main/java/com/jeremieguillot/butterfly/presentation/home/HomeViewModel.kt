@@ -43,22 +43,22 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun setSelectedButterfly(index: Int) {
-        val butterfly = state.butterflies[index]
-        getConfusionButterflies(butterfly).onEach {
-            when (it) {
-                is Result.Failure -> {
-                    _errorEvents.send(HomeContract.Error.UnknownIssue)
-                    state = state.copy(selectedIndexButterfly = index)
-                }
-
-                Result.Loading -> {}
-                is Result.Success -> {
-                    state =
-                        state.copy(selectedIndexButterfly = index, confusionButterflies = it.value)
-                    _uiEvent.send(HomeContract.Navigation.OpenDetail)
-                }
-            }
-        }.launchIn(viewModelScope)
+//        val butterfly = state.butterflies[index]
+//        getConfusionButterflies(butterfly).onEach {
+//            when (it) {
+//                is Result.Failure -> {
+//                    _errorEvents.send(HomeContract.Error.UnknownIssue)
+//                    state = state.copy(selectedIndexButterfly = index)
+//                }
+//
+//                Result.Loading -> {}
+//                is Result.Success -> {
+//                    state =
+//                        state.copy(selectedIndexButterfly = index, confusionButterflies = it.value)
+//                    _uiEvent.send(HomeContract.Navigation.OpenDetail)
+//                }
+//            }
+//        }.launchIn(viewModelScope)
     }
 
     private fun toggleSearchBarVisibility() {
@@ -88,17 +88,18 @@ class HomeViewModel @Inject constructor(
 
 
     private fun filterButterflies(query: String) {
-        val filteredButterflies = if (query.isNotBlank()) {
-            state.butterflies.filter {
-                it.commonName.contains(
-                    query,
-                    ignoreCase = true
-                ) or it.latinName.contains(query, ignoreCase = true)
-            }
-        } else {
-            state.butterflies
-        }
-        state = state.copy(filteredButterflies = filteredButterflies, searchText = query)
+        //TODO FIX IT
+//        val filteredButterflies = if (query.isNotBlank()) {
+//            state.butterflies.filter {
+//                it.commonName.contains(
+//                    query,
+//                    ignoreCase = true
+//                ) or it.latinName.contains(query, ignoreCase = true)
+//            }
+//        } else {
+//            state.butterflies
+//        }
+//        state = state.copy(filteredButterflies = filteredButterflies, searchText = query)
     }
 
     private fun resetSearch() {
