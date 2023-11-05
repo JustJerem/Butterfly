@@ -222,7 +222,6 @@ private fun DetailScreen(
                     butterfly.hostPlants.joinToString(", ")
                 )
 
-
                 ButterflyDetailItem(Icons.Default.Info, "Fréquence", butterfly.frequency)
                 ButterflyDetailItem(
                     Icons.Default.PregnantWoman,
