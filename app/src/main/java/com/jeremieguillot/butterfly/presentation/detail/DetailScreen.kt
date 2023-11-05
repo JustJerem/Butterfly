@@ -26,7 +26,7 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AcUnit
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.FamilyRestroom
 import androidx.compose.material.icons.filled.FilterVintage
 import androidx.compose.material.icons.filled.ImageSearch
@@ -60,19 +60,19 @@ import coil.request.ImageRequest
 import com.jeremieguillot.butterfly.domain.model.ButterflyModel
 import com.jeremieguillot.butterfly.domain.model.ConservationStatus
 import com.jeremieguillot.butterfly.domain.model.VisibleMonth
-import com.jeremieguillot.butterfly.presentation.destinations.DetailScreenDestination
 import com.jeremieguillot.butterfly.presentation.destinations.ZoomableScreenDestination
 import com.jeremieguillot.butterfly.presentation.detail.composable.ConservationStatusLogo
 import com.jeremieguillot.butterfly.presentation.detail.composable.YearlyCalendar
 import com.jeremieguillot.butterfly.presentation.home.composable.ButterflyCard
-import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
-@Destination
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun DetailScreen(
     butterfly: ButterflyModel,
-    navigator: DestinationsNavigator
+    confusionButterfly: List<ButterflyModel>,
+    navigator: DestinationsNavigator,
+    onClose: () -> Unit
 ) {
 
     Scaffold(
@@ -92,17 +92,16 @@ fun DetailScreen(
                         )
                     }
                 },
-                navigationIcon = {
+                actions = {
                     IconButton(
-                        onClick = { navigator.popBackStack() }
+                        onClick = { onClose() }
                     ) {
                         Icon(
-                            imageVector = Icons.Filled.ArrowBack,
+                            imageVector = Icons.Filled.Close,
                             contentDescription = null
                         )
                     }
                 }
-
             )
         }
     ) {
@@ -118,21 +117,20 @@ fun DetailScreen(
                 })
                 Column {
 
-
                     HorizontalPager(
                         state = pagerState,
                         modifier = Modifier.padding(horizontal = 8.dp)
-                    ) { page ->
+                    ) { index ->
 
                         AsyncImage(
                             model = ImageRequest.Builder(LocalContext.current)
-                                .data(butterfly.carousel[page])
+                                .data(butterfly.carousel[index])
                                 .crossfade(true)
                                 .build(),
                             contentDescription = null,
                             contentScale = ContentScale.Crop,
                             modifier = Modifier
-                                .clickable { navigator.navigate(ZoomableScreenDestination(butterfly.carousel[page])) }
+                                .clickable { navigator.navigate(ZoomableScreenDestination(butterfly.carousel[index])) }
                                 .fillMaxWidth()
                                 .height(200.dp)
                                 .clip(MaterialTheme.shapes.medium),
