@@ -119,6 +119,12 @@ dependencies {
     implementation("com.squareup.okhttp3:logging-interceptor:4.9.1")
     implementation("com.github.mrmike:ok2curl:0.7.0")
 
+    //Paging
+    val paging_version = "3.1.1"
+    implementation("androidx.paging:paging-runtime:$paging_version")
+    implementation("androidx.paging:paging-compose:1.0.0-alpha18")
+
+
     //Nav
     implementation("io.github.raamcosta.compose-destinations:animations-core:1.8.42-beta")
     ksp("io.github.raamcosta.compose-destinations:ksp:1.8.42-beta")
