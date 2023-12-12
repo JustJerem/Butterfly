@@ -5,4 +5,5 @@ import com.jeremieguillot.butterfly.domain.model.ButterflyModel
 
 interface ButterflyRepository {
     suspend fun getButterflies(): Pager<Int, ButterflyModel>
+    suspend fun searchButterflies(query: String): Pager<Int, ButterflyModel>
 }

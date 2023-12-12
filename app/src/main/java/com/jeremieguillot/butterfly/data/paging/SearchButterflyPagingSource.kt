@@ -9,15 +9,17 @@ import java.io.IOException
 
 private const val STARTING_PAGE_INDEX = 1
 
-class ButterflyPagingSource(
-    private val apiClient: ApiClient
+class SearchButterflyPagingSource(
+    private val apiClient: ApiClient,
+    private val query: String,
 ) : PagingSource<Int, ButterflyModel>() {
     override suspend fun load(
         params: LoadParams<Int>
     ): LoadResult<Int, ButterflyModel> {
         return try {
             val nextPageNumber = params.key ?: STARTING_PAGE_INDEX
-            val response = apiClient.getButterflies(nextPageNumber)
+            val filterParam = "(common_name~'$query' || latin_name~'$query')"
+            val response = apiClient.searchButterflies(nextPageNumber, filterParam)
             LoadResult.Page(
                 data = response.items.map { it.toDomainModel() },
                 prevKey = if (nextPageNumber == STARTING_PAGE_INDEX) null else nextPageNumber,

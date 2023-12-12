@@ -4,6 +4,7 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import com.jeremieguillot.butterfly.data.network.client.ApiClient
 import com.jeremieguillot.butterfly.data.paging.ButterflyPagingSource
+import com.jeremieguillot.butterfly.data.paging.SearchButterflyPagingSource
 import com.jeremieguillot.butterfly.domain.interactors.common.Failure
 import com.jeremieguillot.butterfly.domain.model.ButterflyModel
 import com.jeremieguillot.butterfly.domain.repository.ButterflyManager
@@ -23,7 +24,6 @@ class ButterflyRepositoryImpl(
     override suspend fun getButterflies(): Pager<Int, ButterflyModel> {
         if (networkHandler.isNetworkAvailable()) {
             try {
-
                 return Pager(
                     config = PagingConfig(
                         pageSize = PAGE_SIZE,
@@ -34,16 +34,31 @@ class ButterflyRepositoryImpl(
                         )
                     }
                 )
-
-//                return butterflyManagerImp.getButterflies().ifEmpty {
-//                    val response = apiClient.getButterflies()
-//                    val butterfliesModel = response.items.map { it.toDomainModel() }
-//                    butterflyManagerImp.setButterflies(butterfliesModel)
-//                    butterfliesModel
-//                }
             } catch (e: Exception) {
                 throw Failure.ServerError(e.message)
             }
         } else throw Failure.NetworkConnection
     }
+
+    override suspend fun searchButterflies(query: String): Pager<Int, ButterflyModel> {
+        if (networkHandler.isNetworkAvailable()) {
+            try {
+                return Pager(
+                    config = PagingConfig(
+                        pageSize = PAGE_SIZE,
+                    ),
+                    pagingSourceFactory = {
+                        SearchButterflyPagingSource(
+                            apiClient = apiClient,
+                            query = query,
+                        )
+                    }
+                )
+
+            } catch (e: Exception) {
+                throw Failure.ServerError(e.message)
+            }
+        } else throw Failure.NetworkConnection
+    }
+
 }

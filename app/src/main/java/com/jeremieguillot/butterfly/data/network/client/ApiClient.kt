@@ -8,5 +8,13 @@ interface ApiClient {
 
 
     @GET("collections/butterfly/records")
-    suspend fun getButterflies(@Query(value = "page") page: Int = 1): CallResponse
+    suspend fun getButterflies(
+        @Query(value = "page") page: Int = 1
+    ): CallResponse
+
+    @GET("collections/butterfly/records")
+    suspend fun searchButterflies(
+        @Query(value = "page") page: Int = 1,
+        @Query(value = "filter") query: String
+    ): CallResponse
 }

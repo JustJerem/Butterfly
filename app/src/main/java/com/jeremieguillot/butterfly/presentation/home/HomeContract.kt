@@ -32,6 +32,8 @@ class HomeContract {
         val isViewLoading: Boolean = true,
         val isSearchBarVisible: Boolean = false,
         val searchText: String = "",
+        //je pense que l'une des deux listes pourraient soit rester dans le ViewModel soit en BDD,
+        // mais ca ne fait pas parti du state de la vue a proprement parler...
         val butterflies: Flow<PagingData<ButterflyModel>> = flowOf(),
         val filteredButterflies: Flow<PagingData<ButterflyModel>> = flowOf(),
 

@@ -7,9 +7,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jeremieguillot.butterfly.domain.interactors.GetButterflies
 import com.jeremieguillot.butterfly.domain.interactors.GetConfusionButterflies
+import com.jeremieguillot.butterfly.domain.interactors.SearchButterflies
 import com.jeremieguillot.butterfly.presentation.data.Result
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -19,6 +21,7 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(
     private val getButterflies: GetButterflies,
     private val getConfusionButterflies: GetConfusionButterflies,
+    private val searchButterflies: SearchButterflies,
 ) : ViewModel() {
 
     var state by mutableStateOf(HomeContract.State())
@@ -88,18 +91,13 @@ class HomeViewModel @Inject constructor(
 
 
     private fun filterButterflies(query: String) {
-        //TODO FIX IT
-//        val filteredButterflies = if (query.isNotBlank()) {
-//            state.butterflies.filter {
-//                it.commonName.contains(
-//                    query,
-//                    ignoreCase = true
-//                ) or it.latinName.contains(query, ignoreCase = true)
-//            }
-//        } else {
-//            state.butterflies
-//        }
-//        state = state.copy(filteredButterflies = filteredButterflies, searchText = query)
+        searchButterflies(query.lowercase()).onEach {
+            state = when (it) {
+                is Result.Failure -> state.copy(filteredButterflies = flowOf(), searchText = query)
+                Result.Loading -> state.copy(filteredButterflies = flowOf(), searchText = query)
+                is Result.Success -> state.copy(filteredButterflies = it.value, searchText = query)
+            }
+        }.launchIn(viewModelScope)
     }
 
     private fun resetSearch() {
