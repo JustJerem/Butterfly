@@ -27,14 +27,16 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AcUnit
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.ChildFriendly
 import androidx.compose.material.icons.filled.FamilyRestroom
-import androidx.compose.material.icons.filled.FilterVintage
+import androidx.compose.material.icons.filled.FlightTakeoff
+import androidx.compose.material.icons.filled.HelpOutline
 import androidx.compose.material.icons.filled.ImageSearch
 import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.Landscape
+import androidx.compose.material.icons.filled.LocalFlorist
 import androidx.compose.material.icons.filled.Policy
-import androidx.compose.material.icons.filled.PregnantWoman
 import androidx.compose.material.icons.filled.SettingsEthernet
-import androidx.compose.material.icons.filled.Terrain
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -65,6 +67,7 @@ import coil.request.ImageRequest
 import com.jeremieguillot.butterfly.domain.model.ButterflyModel
 import com.jeremieguillot.butterfly.domain.model.ConservationStatus
 import com.jeremieguillot.butterfly.domain.model.VisibleMonth
+import com.jeremieguillot.butterfly.presentation.destinations.DetailScreenDestination
 import com.jeremieguillot.butterfly.presentation.destinations.ZoomableScreenDestination
 import com.jeremieguillot.butterfly.presentation.detail.composable.ConservationStatusLogo
 import com.jeremieguillot.butterfly.presentation.detail.composable.YearlyCalendar
@@ -188,7 +191,7 @@ private fun DetailScreen(
             }
             item {
                 ButterflyDetailItem(
-                    Icons.Default.Info,
+                    Icons.Default.HelpOutline,
                     "Confusions possibles",
                     butterfly.possibleConfusions
                 )
@@ -211,20 +214,20 @@ private fun DetailScreen(
                     butterfly.flightPeriod
                 )
                 ButterflyDetailItem(
-                    Icons.Default.FilterVintage,
+                    Icons.Default.Landscape,
                     "Habitats naturels",
                     butterfly.naturalHabitats.joinToString(", ")
                 )
 
                 ButterflyDetailItem(
-                    Icons.Default.FilterVintage,
+                    Icons.Default.LocalFlorist,
                     "Plantes hôtes",
                     butterfly.hostPlants.joinToString(", ")
                 )
 
                 ButterflyDetailItem(Icons.Default.Info, "Fréquence", butterfly.frequency)
                 ButterflyDetailItem(
-                    Icons.Default.PregnantWoman,
+                    Icons.Default.ChildFriendly,
                     "Générations par an",
                     butterfly.generationsPerYear.toString()
                 )
@@ -235,7 +238,7 @@ private fun DetailScreen(
                 )
 
                 ButterflyDetailItem(
-                    Icons.Default.Terrain,
+                    Icons.Default.FlightTakeoff,
                     "Altitude",
                     "${butterfly.minAltitude} m - ${butterfly.maxAltitude} m"
                 )
@@ -356,7 +359,7 @@ fun ButterflyConfusionDetailItem(
                         .width(120.dp),
                     butterfly = it
                 ) {
-                    //navigator.navigate(DetailScreenDestination(it))
+                    navigator.navigate(DetailScreenDestination(it))
                 }
             }
         }
