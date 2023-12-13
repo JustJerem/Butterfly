@@ -24,10 +24,10 @@ class DetailViewModel @Inject constructor(
     // it's on repeat... peut etre parce que la vue se dessine en boucle
     fun checkConfussionButterflies(selectedButterfly: ButterflyModel) {
         getConfusionButterflies(selectedButterfly).onEach {
-            when (it) {
-                is Result.Failure -> confussionButterflies = emptyList()
-                Result.Loading -> confussionButterflies = emptyList()
-                is Result.Success -> confussionButterflies = it.value
+            confussionButterflies = when (it) {
+                is Result.Failure -> emptyList()
+                Result.Loading -> emptyList()
+                is Result.Success -> it.value
             }
         }.launchIn(viewModelScope)
     }

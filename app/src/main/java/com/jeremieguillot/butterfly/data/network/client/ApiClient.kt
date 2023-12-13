@@ -13,5 +13,7 @@ interface ApiClient {
     ): CallResponse
 
     @GET("collections/butterfly/records")
-    suspend fun getButterflies(@Query("filter") idsFilter: String): CallResponse
+    suspend fun getButterflies(
+        @Query("filter") idsFilter: String
+    ): CallResponse
 }
