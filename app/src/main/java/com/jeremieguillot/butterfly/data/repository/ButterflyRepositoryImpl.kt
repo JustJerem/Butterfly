@@ -6,7 +6,6 @@ import com.jeremieguillot.butterfly.data.network.client.ApiClient
 import com.jeremieguillot.butterfly.data.paging.ButterflyPagingSource
 import com.jeremieguillot.butterfly.domain.interactors.common.Failure
 import com.jeremieguillot.butterfly.domain.model.ButterflyModel
-import com.jeremieguillot.butterfly.domain.repository.ButterflyManager
 import com.jeremieguillot.butterfly.domain.repository.ButterflyRepository
 import com.jeremieguillot.olympicgame.data.network.util.NetworkHandler
 
@@ -16,7 +15,6 @@ const val PAGE_SIZE = 30
 class ButterflyRepositoryImpl(
     private val networkHandler: NetworkHandler,
     private val apiClient: ApiClient,
-    private val butterflyManagerImp: ButterflyManager
 ) : ButterflyRepository {
 
     //Get All Butterflies from the RemoteData API

@@ -18,7 +18,7 @@ class ButterflyPagingSource(
         return try {
             // Start refresh at page 1 if undefined.
             val nextPageNumber = params.key ?: STARTING_PAGE_INDEX
-            val response = apiClient.getButterflies(nextPageNumber)
+            val response = apiClient.getAllButterflies(nextPageNumber)
             LoadResult.Page(
                 data = response.items.map { it.toDomainModel() },
                 prevKey = if (nextPageNumber == STARTING_PAGE_INDEX) null else nextPageNumber,
