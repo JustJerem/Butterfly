@@ -44,6 +44,10 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -55,6 +59,7 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.jeremieguillot.butterfly.domain.model.ButterflyModel
@@ -72,8 +77,27 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 fun DetailScreen(
     butterfly: ButterflyModel,
     navigator: DestinationsNavigator,
+    viewModel: DetailViewModel = hiltViewModel(),
 ) {
 
+    //TODO quick hack, must be improved.
+    var callDone by remember {
+        mutableStateOf(true)
+    }
+    if (callDone) {
+        viewModel.checkConfussionButterflies(butterfly)
+        callDone = false
+    }
+
+    DetailScreen(butterfly, navigator, viewModel.confussionButterflies)
+}
+
+@Composable
+private fun DetailScreen(
+    butterfly: ButterflyModel,
+    navigator: DestinationsNavigator,
+    confusionButterfly: List<ButterflyModel>
+) {
     Scaffold(
         topBar = {
             TopAppBar(
@@ -228,15 +252,15 @@ fun DetailScreen(
                     butterfly.photoAuthor
                 )
 
-//                if (confusionButterfly.isNotEmpty()) {
-//                    ButterflyConfusionDetailItem(
-//                        "Confusion possible",
-//                        confusionButterfly,
-//                        navigator
-//                    )
-//
-//                    Spacer(modifier = Modifier.padding(8.dp))
-//                }
+                if (butterfly.confusionButterfliesId.isNotEmpty()) {
+                    ButterflyConfusionDetailItem(
+                        "Confusion possible",
+                        confusionButterfly,
+                        navigator
+                    )
+
+                    Spacer(modifier = Modifier.padding(8.dp))
+                }
             }
         }
     }

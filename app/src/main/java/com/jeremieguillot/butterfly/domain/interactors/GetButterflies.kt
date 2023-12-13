@@ -16,8 +16,10 @@ class GetButterflies @Inject constructor(
 
     operator fun invoke(): Flow<Result<Flow<PagingData<ButterflyModel>>>> = flow {
         emit(Result.Loading)
-        val butterflies = butterflyRepository.getButterflies()
+
+        val butterflies = butterflyRepository.getAllButterflies()
         emit(Result.Success(butterflies.flow))
+
     }.catch { error ->
         Timber.e(error)
         emit(Result.Failure(error.message, error))
