@@ -251,7 +251,7 @@ private fun DetailScreen(
                     butterfly.photoAuthor
                 )
 
-                if (butterfly.confusionButterfliesId.isNotEmpty()) {
+                if (confusionButterfly.isNotEmpty()) {
                     ButterflyConfusionDetailItem(
                         "Confusion possible",
                         confusionButterfly,
