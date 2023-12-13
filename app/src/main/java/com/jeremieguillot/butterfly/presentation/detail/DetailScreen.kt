@@ -216,6 +216,12 @@ private fun DetailScreen(
                     butterfly.naturalHabitats.joinToString(", ")
                 )
 
+                ButterflyDetailItem(
+                    Icons.Default.FilterVintage,
+                    "Plantes hôtes",
+                    butterfly.hostPlants.joinToString(", ")
+                )
+
 
                 ButterflyDetailItem(Icons.Default.Info, "Fréquence", butterfly.frequency)
                 ButterflyDetailItem(
