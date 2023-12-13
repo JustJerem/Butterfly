@@ -36,11 +36,19 @@ android {
         }
         create("staging") {
             dimension = "environment"
-            buildConfigField("String", "API_BASE_URL", "\"\"") //TODO need to be define when staging ready 05.06.2023
+            buildConfigField(
+                "String",
+                "API_BASE_URL",
+                "\"\""
+            ) //TODO need to be define when staging ready 05.06.2023
         }
         create("prod") {
             dimension = "environment"
-            buildConfigField("String", "API_BASE_URL", "\"\"") //TODO need to be define when prod ready 05.06.2023
+            buildConfigField(
+                "String",
+                "API_BASE_URL",
+                "\"\""
+            ) //TODO need to be define when prod ready 05.06.2023
         }
     }
 
@@ -140,6 +148,14 @@ dependencies {
 
     //Markdown
     implementation("com.halilibo.compose-richtext:richtext-commonmark:0.16.0")
+
+    //Room
+    val room_version = "2.5.0"
+
+    implementation("androidx.room:room-runtime:$room_version")
+    implementation("androidx.room:room-ktx:$room_version")
+    annotationProcessor("androidx.room:room-compiler:$room_version")
+    ksp("androidx.room:room-compiler:$room_version")
 
     //Tests
     testImplementation("junit:junit:4.13.2")
