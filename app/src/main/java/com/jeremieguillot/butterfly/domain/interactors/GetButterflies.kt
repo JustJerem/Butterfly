@@ -18,6 +18,7 @@ class GetButterflies @Inject constructor(
         emit(Result.Loading)
 
         val butterflies = butterflyRepository.getAllButterflies()
+
         emit(Result.Success(butterflies.flow))
 
     }.catch { error ->

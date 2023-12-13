@@ -58,4 +58,18 @@ class ButterflyRepositoryImpl(
             }
         } else throw Failure.NetworkConnection
     }
+
+    override suspend fun getButterflies(ids: List<String>): List<ButterflyModel> {
+        if (networkHandler.isNetworkAvailable()) {
+            try {
+                val idsFilter = "(${ids.joinToString(" || ") { "id='$it'" }}"
+                val response = apiClient.getButterflies(idsFilter)
+                val butterfliesModel = response.items.map { it.toDomainModel() }
+//                butterflyManagerImp.setButterflies(butterfliesModel)
+                return butterfliesModel
+            } catch (e: Exception) {
+                throw Failure.ServerError(e.message)
+            }
+        } else throw Failure.NetworkConnection
+    }
 }
