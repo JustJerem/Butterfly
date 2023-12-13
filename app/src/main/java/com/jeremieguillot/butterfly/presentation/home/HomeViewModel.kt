@@ -13,6 +13,7 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -43,22 +44,26 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun setSelectedButterfly(index: Int) {
-        val butterfly = state.butterflies[index]
-        getConfusionButterflies(butterfly).onEach {
-            when (it) {
-                is Result.Failure -> {
-                    _errorEvents.send(HomeContract.Error.UnknownIssue)
-                    state = state.copy(selectedIndexButterfly = index)
-                }
-
-                Result.Loading -> {}
-                is Result.Success -> {
-                    state =
-                        state.copy(selectedIndexButterfly = index, confusionButterflies = it.value)
-                    _uiEvent.send(HomeContract.Navigation.OpenDetail)
-                }
-            }
-        }.launchIn(viewModelScope)
+//        val butterfly = state.butterflies[index]
+        state = state.copy(selectedIndexButterfly = index)
+        viewModelScope.launch {
+            _uiEvent.send(HomeContract.Navigation.OpenDetail)
+        }
+//        getConfusionButterflies(butterfly).onEach {
+//            when (it) {
+//                is Result.Failure -> {
+//                    _errorEvents.send(HomeContract.Error.UnknownIssue)
+//                    state = state.copy(selectedIndexButterfly = index)
+//                }
+//
+//                Result.Loading -> {}
+//                is Result.Success -> {
+//                    state =
+//                        state.copy(selectedIndexButterfly = index, confusionButterflies = it.value)
+//                    _uiEvent.send(HomeContract.Navigation.OpenDetail)
+//                }
+//            }
+//        }.launchIn(viewModelScope)
     }
 
     private fun toggleSearchBarVisibility() {
