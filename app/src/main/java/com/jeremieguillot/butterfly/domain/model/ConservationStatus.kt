@@ -14,5 +14,6 @@ enum class ConservationStatus(
     NT("Quasi menacé", Color(250, 242, 204)),
     LC("Préoccupation mineure", Color(122, 181, 75)),
     DD("Données insuffisantes", Color(211, 211, 211)),
+    NA("Non Applicable", Color(145, 146, 145)),
     NE("Non évalué", Color.White),
 }

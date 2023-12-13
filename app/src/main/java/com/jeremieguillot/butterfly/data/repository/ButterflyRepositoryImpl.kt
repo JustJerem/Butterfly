@@ -18,7 +18,7 @@ class ButterflyRepositoryImpl(
         if (networkHandler.isNetworkAvailable()) {
             try {
                 return butterflyManagerImp.getButterflies().ifEmpty {
-                    val response = apiClient.getButterflies()
+                    val response = apiClient.getAllButterflies()
                     val butterfliesModel = response.items.map { it.toDomainModel() }
                     butterflyManagerImp.setButterflies(butterfliesModel)
                     butterfliesModel
