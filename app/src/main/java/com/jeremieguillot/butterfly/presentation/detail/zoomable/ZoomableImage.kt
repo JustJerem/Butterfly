@@ -9,25 +9,39 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import coil.request.ImageRequest
+import com.jeremieguillot.butterfly.domain.model.ImageInfo
+import java.text.SimpleDateFormat
+import java.util.Locale
 import kotlin.math.PI
 import kotlin.math.cos
 import kotlin.math.roundToInt
@@ -36,7 +50,7 @@ import kotlin.math.sin
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ZoomableImage(
-    model: Any,
+    imageInfo: ImageInfo,
     contentDescription: String? = null,
     onBackHandler: () -> Unit,
 ) {
@@ -65,8 +79,12 @@ fun ZoomableImage(
                 }
             )
     ) {
+
         AsyncImage(
-            model,
+            ImageRequest.Builder(LocalContext.current)
+                .data(imageInfo.filePath)
+                .crossfade(true)
+                .build(),
             contentDescription = contentDescription,
             contentScale = ContentScale.Fit,
             modifier = Modifier
@@ -102,6 +120,34 @@ fun ZoomableImage(
                 }
                 .fillMaxSize()
         )
+        Text(
+            text = buildAnnotatedString {
+                val parts = mutableListOf<String>()
+
+                imageInfo.authorName?.takeIf { it.isNotBlank() }?.let { authorName ->
+                    withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
+                        parts.add(authorName)
+                    }
+                }
+
+                imageInfo.captureDate?.let {
+                    withStyle(style = SpanStyle(fontWeight = FontWeight.Normal)) {
+                        val outputFormat = SimpleDateFormat("yyyy", Locale.getDefault())
+                        parts.add("Datée de ${outputFormat.format(it)}")
+                    }
+                }
+
+                append(parts.joinToString(" · "))
+            },
+            color = Color.White,
+            modifier = Modifier
+                .padding(16.dp)
+                .align(Alignment.BottomStart)
+                .clip(RoundedCornerShape(50))
+                .background(Color.Black.copy(alpha = 0.5f))
+                .padding(horizontal = 16.dp, vertical = 8.dp)
+        )
+
         IconButton(
             onClick = onBackHandler,
         ) {

@@ -31,7 +31,6 @@ import androidx.compose.material.icons.filled.ChildFriendly
 import androidx.compose.material.icons.filled.FamilyRestroom
 import androidx.compose.material.icons.filled.FlightTakeoff
 import androidx.compose.material.icons.filled.HelpOutline
-import androidx.compose.material.icons.filled.ImageSearch
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Landscape
 import androidx.compose.material.icons.filled.LocalFlorist
@@ -152,7 +151,7 @@ private fun DetailScreen(
 
                         AsyncImage(
                             model = ImageRequest.Builder(LocalContext.current)
-                                .data(butterfly.carousel[page])
+                                .data(butterfly.carousel[page].filePath)
                                 .crossfade(true)
                                 .build(),
                             contentDescription = null,
@@ -248,11 +247,12 @@ private fun DetailScreen(
                     "Stade hivernal",
                     butterfly.winteringStage.joinToString(", ")
                 )
-                ButterflyDetailItem(
-                    Icons.Default.ImageSearch,
-                    "Auteur de la photo",
-                    butterfly.photoAuthor
-                )
+//                TODO Still needed ?
+//                ButterflyDetailItem(
+//                    Icons.Default.ImageSearch,
+//                    "Auteur de la photo",
+//                    butterfly.photoAuthor
+//                )
 
                 if (confusionButterfly.isNotEmpty()) {
                     ButterflyConfusionDetailItem(
