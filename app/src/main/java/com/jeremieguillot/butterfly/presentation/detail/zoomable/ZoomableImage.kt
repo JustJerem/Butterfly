@@ -9,11 +9,6 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.offset
-import androidx.compose.foundation.layout.size
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
@@ -102,15 +97,5 @@ fun ZoomableImage(
                 }
                 .fillMaxSize()
         )
-        IconButton(
-            onClick = onBackHandler,
-        ) {
-            Icon(
-                modifier = Modifier.size(18.dp),
-                imageVector = Icons.Default.ArrowBack,
-                contentDescription = "Close full screen",
-                tint = Color.White
-            )
-        }
     }
 }

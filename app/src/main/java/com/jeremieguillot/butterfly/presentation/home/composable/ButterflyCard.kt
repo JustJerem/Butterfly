@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.jeremieguillot.butterfly.domain.model.ButterflyModel
+import com.jeremieguillot.butterfly.domain.model.ImageCategory
 
 @Composable
 fun ButterflyCard(modifier: Modifier, butterfly: ButterflyModel, onTap: () -> Unit) {
@@ -34,7 +35,8 @@ fun ButterflyCard(modifier: Modifier, butterfly: ButterflyModel, onTap: () -> Un
 
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
-                    .data(butterfly.photos.firstOrNull()).crossfade(true).build(),
+                    .data(butterfly.carousel.firstOrNull { it.category == ImageCategory.PHOTO }?.filePath)
+                    .crossfade(true).build(),
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier

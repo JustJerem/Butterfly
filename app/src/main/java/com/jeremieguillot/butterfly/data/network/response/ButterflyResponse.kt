@@ -4,8 +4,11 @@ package com.jeremieguillot.butterfly.data.network.response
 import com.jeremieguillot.butterfly.data.network.util.PockethostHelper
 import com.jeremieguillot.butterfly.domain.model.ButterflyModel
 import com.jeremieguillot.butterfly.domain.model.ConservationStatus
+import com.jeremieguillot.butterfly.domain.model.ImageCategory
+import com.jeremieguillot.butterfly.domain.model.ImageInfo
 import com.jeremieguillot.butterfly.domain.model.MonthEnum
 import com.jeremieguillot.butterfly.domain.model.VisibleMonth
+import com.jeremieguillot.butterfly.presentation.utils.toDate
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
@@ -62,7 +65,9 @@ data class ButterflyResponse(
     @Json(name = "updated")
     val updated: String,
     @Json(name = "wintering_stage")
-    val winteringStage: List<String>
+    val winteringStage: List<String>,
+    @Json(name = "map_date")
+    val mapDate: String,
 ) {
     fun toDomainModel(): ButterflyModel {
         val illustrationsLink =
@@ -72,34 +77,39 @@ data class ButterflyResponse(
         val status = ConservationStatus.values().first { it.name == conservationStatusFrance }
         val visibleMonth = getVisibilityMonth(flightPeriod)
 
+        val thumbnail = ImageInfo(ImageCategory.PHOTO, photosLink.first(), authorName = photoAuthor)
+        val illustration = ImageInfo(ImageCategory.ILLUSTRATION, illustrationsLink.first())
+        val map = ImageInfo(ImageCategory.MAP, mapLink, captureDate = mapDate.toDate())
         return ButterflyModel(
             collectionId = collectionId,
             collectionName = collectionName,
-            commonName = commonName,
-            conservationStatusFrance = status,
             created = created,
+            updated = updated,
+            id = id,
+            commonName = commonName,
+            latinName = latinName,
+            conservationStatusFrance = status,
+            protectionStatus = protectionStatus,
             family = family,
+            thumbnail = thumbnail,
+//            illustration = illustration,
+//            map = mapLink,
+            mapDate = mapDate.toDate(),
+//            photos = photosLink,
+//            photoAuthor = photoAuthor,
+            carousel = listOf(thumbnail, illustration, map),
             flightPeriod = visibleMonth,
             frequency = frequency,
             generationsPerYear = generationsPerYear,
-            hostPlants = hostPlants,
-            id = id,
-            illustration = illustrationsLink,
-            latinName = latinName,
-            map = mapLink,
-            maxAltitude = maxAltitude,
-            maxWingspan = maxWingspan,
-            minAltitude = minAltitude,
-            minWingspan = minWingspan,
             naturalHabitats = naturalHabitats,
-            confusionButterfliesId = confusionButterfliesId,
-            photoAuthor = photoAuthor,
-            photos = photosLink,
-            possibleConfusions = possibleConfusions,
-            protectionStatus = protectionStatus,
-            updated = updated,
+            hostPlants = hostPlants,
             winteringStage = winteringStage,
-            carousel = photosLink + illustrationsLink + mapLink
+            maxAltitude = maxAltitude,
+            minAltitude = minAltitude,
+            maxWingspan = maxWingspan,
+            minWingspan = minWingspan,
+            confusionButterfliesId = confusionButterfliesId,
+            possibleConfusions = possibleConfusions
         )
     }
 

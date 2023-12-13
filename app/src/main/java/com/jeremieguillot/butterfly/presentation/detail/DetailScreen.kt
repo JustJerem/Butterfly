@@ -29,7 +29,6 @@ import androidx.compose.material.icons.filled.AcUnit
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.FamilyRestroom
 import androidx.compose.material.icons.filled.FilterVintage
-import androidx.compose.material.icons.filled.ImageSearch
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Policy
 import androidx.compose.material.icons.filled.PregnantWoman
@@ -60,7 +59,6 @@ import coil.request.ImageRequest
 import com.jeremieguillot.butterfly.domain.model.ButterflyModel
 import com.jeremieguillot.butterfly.domain.model.ConservationStatus
 import com.jeremieguillot.butterfly.domain.model.VisibleMonth
-import com.jeremieguillot.butterfly.presentation.destinations.ZoomableScreenDestination
 import com.jeremieguillot.butterfly.presentation.detail.composable.ConservationStatusLogo
 import com.jeremieguillot.butterfly.presentation.detail.composable.YearlyCalendar
 import com.jeremieguillot.butterfly.presentation.home.composable.ButterflyCard
@@ -216,11 +214,12 @@ fun DetailScreen(
                     "Stade hivernal",
                     butterfly.winteringStage.joinToString(", ")
                 )
-                ButterflyDetailItem(
-                    Icons.Default.ImageSearch,
-                    "Auteur de la photo",
-                    butterfly.photoAuthor
-                )
+                //Todo si on affiche le nom de l'auteur dans le carouseul, plus besoin ici
+//                ButterflyDetailItem(
+//                    Icons.Default.ImageSearch,
+//                    "Auteur de la photo",
+//                    butterfly.photoAuthor
+//                )
 
 //                if (confusionButterfly.isNotEmpty()) {
 //                    ButterflyConfusionDetailItem(

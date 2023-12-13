@@ -9,7 +9,7 @@ plugins {
 
 android {
     namespace = "com.jeremieguillot.butterfly"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.jeremieguillot.butterfly"
@@ -82,7 +82,7 @@ kotlin {
 dependencies {
     var compose_version = "1.4.3"
 
-    implementation("com.google.android.material:material:1.9.0")
+    implementation("com.google.android.material:material:1.10.0")
     constraints {
         implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.0") {
             because("kotlin-stdlib-jdk7 is now a part of kotlin-stdlib")
@@ -102,6 +102,10 @@ dependencies {
     implementation("androidx.compose.material3:material3:1.2.0-alpha02")
     implementation("androidx.compose.material:material-icons-extended:$compose_version")
 
+    //Zoom pinch
+    implementation("net.engawapg.lib:zoomable:1.5.2")
+
+
     //Hilt - Dependency injection
     implementation("com.google.dagger:hilt-android:2.44")
     kapt("com.google.dagger:hilt-android-compiler:2.44")
@@ -110,7 +114,6 @@ dependencies {
     //Serialization - Moshi
     implementation("com.squareup.moshi:moshi-kotlin:1.14.0")
     implementation("com.squareup.retrofit2:converter-moshi:2.9.0")
-
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.3")
 
 
