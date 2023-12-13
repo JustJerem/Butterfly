@@ -34,7 +34,7 @@ fun ButterflyCard(modifier: Modifier, butterfly: ButterflyModel, onTap: () -> Un
 
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
-                    .data(butterfly.photos.firstOrNull()).crossfade(true).build(),
+                    .data(butterfly.thumbnail.filePath).crossfade(true).build(),
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier

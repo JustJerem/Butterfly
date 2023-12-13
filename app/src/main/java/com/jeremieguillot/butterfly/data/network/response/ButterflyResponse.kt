@@ -4,8 +4,11 @@ package com.jeremieguillot.butterfly.data.network.response
 import com.jeremieguillot.butterfly.data.network.util.PockethostHelper
 import com.jeremieguillot.butterfly.domain.model.ButterflyModel
 import com.jeremieguillot.butterfly.domain.model.ConservationStatus
+import com.jeremieguillot.butterfly.domain.model.ImageCategory
+import com.jeremieguillot.butterfly.domain.model.ImageInfo
 import com.jeremieguillot.butterfly.domain.model.MonthEnum
 import com.jeremieguillot.butterfly.domain.model.VisibleMonth
+import com.jeremieguillot.butterfly.presentation.utils.toDate
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
@@ -62,7 +65,9 @@ data class ButterflyResponse(
     @Json(name = "updated")
     val updated: String,
     @Json(name = "wintering_stage")
-    val winteringStage: List<String>
+    val winteringStage: List<String>,
+    @Json(name = "map_date")
+    val mapDate: String,
 ) {
     fun toDomainModel(): ButterflyModel {
         val illustrationsLink =
@@ -71,6 +76,12 @@ data class ButterflyResponse(
         val photosLink = photos.map { PockethostHelper.getFilePath(collectionId, id, it) }
         val status = ConservationStatus.values().first { it.name == conservationStatusFrance }
         val visibleMonth = getVisibilityMonth(flightPeriod)
+
+        val thumbnail = ImageInfo(ImageCategory.PHOTO, photosLink.first(), authorName = photoAuthor)
+        val illustration =
+            ImageInfo(ImageCategory.ILLUSTRATION, illustrationsLink.firstOrNull() ?: "")
+        val captureDate = mapDate.toDate()
+        val map = ImageInfo(ImageCategory.MAP, mapLink, captureDate = captureDate)
 
         return ButterflyModel(
             collectionId = collectionId,
@@ -84,22 +95,19 @@ data class ButterflyResponse(
             generationsPerYear = generationsPerYear,
             hostPlants = hostPlants,
             id = id,
-            illustration = illustrationsLink,
+            thumbnail = thumbnail,
             latinName = latinName,
-            map = mapLink,
             maxAltitude = maxAltitude,
             maxWingspan = maxWingspan,
             minAltitude = minAltitude,
             minWingspan = minWingspan,
             naturalHabitats = naturalHabitats,
             confusionButterfliesId = confusionButterfliesId,
-            photoAuthor = photoAuthor,
-            photos = photosLink,
             possibleConfusions = possibleConfusions,
             protectionStatus = protectionStatus,
             updated = updated,
             winteringStage = winteringStage,
-            carousel = photosLink + illustrationsLink + mapLink
+            carousel = listOf(thumbnail, illustration, map),
         )
     }
 

@@ -34,7 +34,7 @@ fun ButterflyConfusionCard(butterfly: ButterflyModel) {
         ) {
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
-                    .data(butterfly.photos.first())
+                    .data(butterfly.thumbnail.filePath)
                     .crossfade(true)
                     .build(),
                 contentDescription = null,
