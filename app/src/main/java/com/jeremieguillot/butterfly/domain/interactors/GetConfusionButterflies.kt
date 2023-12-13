@@ -18,16 +18,8 @@ class GetConfusionButterflies @Inject constructor(
     operator fun invoke(selectedButterfly: ButterflyModel): Flow<Result<List<ButterflyModel>>> =
         flow {
             emit(Result.Loading)
-//
-//            val butterflies =
-//                selectedButterfly.confusionButterfliesId.map {
-////                    butterflyManager.getButterfly(it)
-//                    it
-//                }
-
             val butterflies =
                 butterflyRepository.getButterflies(selectedButterfly.confusionButterfliesId)
-
             emit(Result.Success(butterflies))
         }.catch { error ->
             Timber.e(error)
