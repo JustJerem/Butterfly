@@ -93,17 +93,18 @@ class HomeViewModel @Inject constructor(
 
 
     private fun filterButterflies(query: String) {
-        val filteredButterflies = if (query.isNotBlank()) {
-            state.butterflies.filter {
-                it.commonName.contains(
-                    query,
-                    ignoreCase = true
-                ) or it.latinName.contains(query, ignoreCase = true)
-            }
-        } else {
-            state.butterflies
-        }
-        state = state.copy(filteredButterflies = filteredButterflies, searchText = query)
+        //TODO FIX IT
+//        val filteredButterflies = if (query.isNotBlank()) {
+//            state.butterflies.filter {
+//                it.commonName.contains(
+//                    query,
+//                    ignoreCase = true
+//                ) or it.latinName.contains(query, ignoreCase = true)
+//            }
+//        } else {
+//            state.butterflies
+//        }
+//        state = state.copy(filteredButterflies = filteredButterflies, searchText = query)
     }
 
     private fun resetSearch() {

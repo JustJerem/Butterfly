@@ -1,8 +1,11 @@
 package com.jeremieguillot.butterfly.presentation.home
 
+import androidx.paging.PagingData
 import com.jeremieguillot.butterfly.R
 import com.jeremieguillot.butterfly.domain.model.ButterflyModel
 import com.jeremieguillot.butterfly.presentation.utils.UiText
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOf
 
 class HomeContract {
 
@@ -29,8 +32,8 @@ class HomeContract {
         val isViewLoading: Boolean = true,
         val isSearchBarVisible: Boolean = false,
         val searchText: String = "",
-        val butterflies: List<ButterflyModel> = emptyList(),
-        val filteredButterflies: List<ButterflyModel> = emptyList(),
+        val butterflies: Flow<PagingData<ButterflyModel>> = flowOf(),
+        val filteredButterflies: Flow<PagingData<ButterflyModel>> = flowOf(),
 
         //Detail
         val selectedIndexButterfly: Int = 0,

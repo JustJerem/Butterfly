@@ -92,6 +92,7 @@ fun DetailScreen(
     DetailScreen(butterfly, navigator, viewModel.confussionButterflies)
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun DetailScreen(
     butterfly: ButterflyModel,
@@ -140,7 +141,6 @@ private fun DetailScreen(
                     butterfly.carousel.size
                 })
                 Column {
-
 
                     HorizontalPager(
                         state = pagerState,
@@ -221,7 +221,6 @@ private fun DetailScreen(
                     "Plantes hôtes",
                     butterfly.hostPlants.joinToString(", ")
                 )
-
 
                 ButterflyDetailItem(Icons.Default.Info, "Fréquence", butterfly.frequency)
                 ButterflyDetailItem(
