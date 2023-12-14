@@ -39,25 +39,24 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
-import com.jeremieguillot.butterfly.R
+import com.jeremieguillot.butterfly.presentation._nav.HomeScreenNavArgs
 import com.jeremieguillot.butterfly.presentation.destinations.DetailScreenDestination
 import com.jeremieguillot.butterfly.presentation.home.composable.ButterflyCard
 import com.ramcosta.composedestinations.annotation.Destination
-import com.ramcosta.composedestinations.annotation.RootNavGraph
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
 
-@Destination
-@RootNavGraph(start = true)
+@Destination(
+    navArgsDelegate = HomeScreenNavArgs::class
+)
 @Composable
 fun HomeScreen(
     viewModel: HomeViewModel = hiltViewModel(),
@@ -126,7 +125,7 @@ fun HomeScreen(
                             }
                         }
                     } else {
-                        Text(text = stringResource(R.string.home_screen_title))
+                        Text(text = state.title)
                     }
                 },
                 actions = {

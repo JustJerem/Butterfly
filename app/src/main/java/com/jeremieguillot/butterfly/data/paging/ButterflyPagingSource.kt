@@ -10,7 +10,8 @@ import java.io.IOException
 private const val STARTING_PAGE_INDEX = 1
 
 class ButterflyPagingSource(
-    private val apiClient: ApiClient
+    private val apiClient: ApiClient,
+    private val filter: String,
 ) : PagingSource<Int, ButterflyModel>() {
     override suspend fun load(
         params: LoadParams<Int>
@@ -18,17 +19,19 @@ class ButterflyPagingSource(
         return try {
             // Start refresh at page 1 if undefined.
             val nextPageNumber = params.key ?: STARTING_PAGE_INDEX
-            val response = apiClient.getAllButterflies(nextPageNumber)
+            val response = apiClient.getAllButterflies(nextPageNumber, filter)
             LoadResult.Page(
                 data = response.items.map { it.toDomainModel() },
                 prevKey = if (nextPageNumber == STARTING_PAGE_INDEX) null else nextPageNumber,
-                nextKey = response.page + 1
+                nextKey = (response.page + 1).takeIf { it <= response.totalPages }
             )
         } catch (exception: IOException) {
             LoadResult.Error(exception)
         } catch (exception: HttpException) {
             LoadResult.Error(exception)
         }
+
+        //https://warm-butterfly.pockethost.io/api/collections/butterfly/records?page=1&filter=(family="Papilionidés")&sort=common_name
     }
 
     override fun getRefreshKey(state: PagingState<Int, ButterflyModel>): Int? {
