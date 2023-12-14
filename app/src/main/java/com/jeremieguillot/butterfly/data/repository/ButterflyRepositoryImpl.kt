@@ -18,7 +18,7 @@ class ButterflyRepositoryImpl(
 ) : ButterflyRepository {
 
     //Get All Butterflies from the RemoteData API
-    override suspend fun getAllButterflies(): Pager<Int, ButterflyModel> {
+    override suspend fun getAllButterflies(filter: String): Pager<Int, ButterflyModel> {
         if (networkHandler.isNetworkAvailable()) {
             try {
 
@@ -29,6 +29,7 @@ class ButterflyRepositoryImpl(
                     pagingSourceFactory = {
                         ButterflyPagingSource(
                             apiClient = apiClient,
+                            filter = filter,
                         )
                     }
                 )

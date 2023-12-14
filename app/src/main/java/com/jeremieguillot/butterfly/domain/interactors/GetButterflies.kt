@@ -14,10 +14,11 @@ class GetButterflies @Inject constructor(
     private val butterflyRepository: ButterflyRepository
 ) {
 
-    operator fun invoke(): Flow<Result<Flow<PagingData<ButterflyModel>>>> = flow {
+    operator fun invoke(family: String): Flow<Result<Flow<PagingData<ButterflyModel>>>> = flow {
         emit(Result.Loading)
 
-        val butterflies = butterflyRepository.getAllButterflies()
+        val familyParam = "(family=\"$family\")"
+        val butterflies = butterflyRepository.getAllButterflies(familyParam)
 
         emit(Result.Success(butterflies.flow))
 

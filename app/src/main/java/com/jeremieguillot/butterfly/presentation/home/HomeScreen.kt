@@ -47,17 +47,18 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.jeremieguillot.butterfly.R
+import com.jeremieguillot.butterfly.presentation._nav.HomeScreenNavArgs
 import com.jeremieguillot.butterfly.presentation.destinations.DetailScreenDestination
 import com.jeremieguillot.butterfly.presentation.home.composable.ButterflyCard
 import com.ramcosta.composedestinations.annotation.Destination
-import com.ramcosta.composedestinations.annotation.RootNavGraph
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
 
-@Destination
-@RootNavGraph(start = true)
+@Destination(
+    navArgsDelegate = HomeScreenNavArgs::class
+)
 @Composable
 fun HomeScreen(
     viewModel: HomeViewModel = hiltViewModel(),

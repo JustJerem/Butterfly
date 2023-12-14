@@ -10,7 +10,6 @@ import kotlinx.coroutines.flow.flowOf
 class HomeContract {
 
     sealed class Event {
-        object RequestButterflies : Event()
         data class SearchButterflies(val query: String) : Event()
         data class SetSelectedIndexButterfly(val index: Int) : Event()
         object ToggleSearchBar : Event()
