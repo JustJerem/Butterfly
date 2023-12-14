@@ -17,6 +17,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Search
@@ -32,14 +34,18 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -92,6 +98,10 @@ fun HomeScreen(
         }
     }
 
+    var searchText by remember {
+        mutableStateOf("")
+    }
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -99,7 +109,7 @@ fun HomeScreen(
                     if (state.isSearchBarVisible) {
 
                         Box {
-                            if (state.searchText.isEmpty()) {
+                            if (searchText.isEmpty()) {
                                 Text(
                                     text = "Rechercher...",
                                     style = typography.bodySmall,
@@ -112,9 +122,14 @@ fun HomeScreen(
                             }
 
                             BasicTextField(
-                                value = state.searchText,
-                                onValueChange = { onEvent(HomeContract.Event.SearchButterflies(it)) },
-                                modifier = Modifier
+                                value = searchText,
+                                onValueChange = { searchText = it },
+                                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
+                            keyboardActions = KeyboardActions(onSearch = {
+                                onEvent(HomeContract.Event.SearchButterflies(searchText))
+                            }),
+
+                            modifier = Modifier
                                     .fillMaxWidth()
                                     .padding(end = 16.dp)
                                     .focusRequester(focusRequester),
@@ -130,7 +145,10 @@ fun HomeScreen(
                 },
                 actions = {
                     IconButton(
-                        onClick = { onEvent(HomeContract.Event.ToggleSearchBar) }
+                        onClick = {
+                            searchText = ""
+                            onEvent(HomeContract.Event.ToggleSearchBar)
+                        }
                     ) {
                         Icon(
                             imageVector = if (state.isSearchBarVisible) Icons.Default.Close else Icons.Default.Search,
@@ -142,7 +160,7 @@ fun HomeScreen(
         },
         snackbarHost = { SnackbarHost(snackbarHostState) },
     ) {
-        val butterfly = state.butterflies.collectAsLazyPagingItems()
+        val butterfly = state.filteredButterflies.collectAsLazyPagingItems()
 
         if (!state.isViewLoading) {
             LazyVerticalGrid(

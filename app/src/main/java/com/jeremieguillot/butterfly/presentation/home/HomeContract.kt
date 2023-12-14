@@ -14,10 +14,6 @@ class HomeContract {
         object ToggleSearchBar : Event()
     }
 
-    sealed class Navigation {
-        object OpenDetail : Navigation()
-    }
-
     sealed class Error {
         object UnknownIssue : Error() {
             val message: UiText = UiText.StringResource(
@@ -30,7 +26,6 @@ class HomeContract {
         val isViewLoading: Boolean = true,
         val title: String = "",
         val isSearchBarVisible: Boolean = false,
-        val searchText: String = "",
         val butterflies: Flow<PagingData<ButterflyModel>> = flowOf(),
         val filteredButterflies: Flow<PagingData<ButterflyModel>> = flowOf(),
 
