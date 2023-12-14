@@ -14,11 +14,21 @@ class GetButterflies @Inject constructor(
     private val butterflyRepository: ButterflyRepository
 ) {
 
-    operator fun invoke(family: String): Flow<Result<Flow<PagingData<ButterflyModel>>>> = flow {
+    operator fun invoke(
+        family: String? = null,
+        name: String? = null
+    ): Flow<Result<Flow<PagingData<ButterflyModel>>>> = flow {
         emit(Result.Loading)
 
-        val familyParam = "(family=\"$family\")"
-        val butterflies = butterflyRepository.getAllButterflies(familyParam)
+       val params = if (family !=null){
+           "(family=\"$family\")"
+       } else if (name != null){
+           "(common_name~\"$name\" || latin_name~\"$name\")"
+       } else ""
+
+//https://warm-butterfly.pockethost.io/api/collections/butterfly/records?filter=(common_name~"tor" || latin_name~"tor")
+
+        val butterflies = butterflyRepository.getAllButterflies(params)
 
         emit(Result.Success(butterflies.flow))
 

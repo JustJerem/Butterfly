@@ -28,9 +28,6 @@ class HomeViewModel @Inject constructor(
     private val _errorEvents = Channel<HomeContract.Error>()
     val errorEvents = _errorEvents.receiveAsFlow()
 
-    private val _uiEvent = Channel<HomeContract.Navigation>()
-    val uiEvent = _uiEvent.receiveAsFlow()
-
     init {
         val navArgs: HomeScreenNavArgs = savedStateHandle.navArgs()
         requestButterflies(navArgs.family)
@@ -74,21 +71,25 @@ class HomeViewModel @Inject constructor(
 
 
     private fun filterButterflies(query: String) {
-        //TODO FIX IT
-//        val filteredButterflies = if (query.isNotBlank()) {
-//            state.butterflies.filter {
-//                it.commonName.contains(
-//                    query,
-//                    ignoreCase = true
-//                ) or it.latinName.contains(query, ignoreCase = true)
-//            }
-//        } else {
-//            state.butterflies
-//        }
-//        state = state.copy(filteredButterflies = filteredButterflies, searchText = query)
+        getButterflies(name = query).onEach {
+            state = when (it) {
+                is Result.Failure -> {
+                    _errorEvents.send(HomeContract.Error.UnknownIssue)
+                    state.copy(isViewLoading = false)
+                }
+
+                Result.Loading -> state.copy(isViewLoading = true)
+                is Result.Success -> {
+                    state.copy(
+                        isViewLoading = false,
+                        filteredButterflies = it.value
+                    )
+                }
+            }
+        }.launchIn(viewModelScope)
     }
 
     private fun resetSearch() {
-        state = state.copy(filteredButterflies = state.butterflies, searchText = "")
+        state = state.copy(filteredButterflies = state.butterflies)
     }
 }
