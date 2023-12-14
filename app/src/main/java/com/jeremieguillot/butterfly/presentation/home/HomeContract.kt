@@ -11,7 +11,6 @@ class HomeContract {
 
     sealed class Event {
         data class SearchButterflies(val query: String) : Event()
-        data class SetSelectedIndexButterfly(val index: Int) : Event()
         object ToggleSearchBar : Event()
     }
 
@@ -29,13 +28,13 @@ class HomeContract {
 
     data class State(
         val isViewLoading: Boolean = true,
+        val title: String = "",
         val isSearchBarVisible: Boolean = false,
         val searchText: String = "",
         val butterflies: Flow<PagingData<ButterflyModel>> = flowOf(),
         val filteredButterflies: Flow<PagingData<ButterflyModel>> = flowOf(),
 
         //Detail
-        val selectedIndexButterfly: Int = 0,
         val confusionButterflies: List<ButterflyModel> = emptyList(),
     )
 }

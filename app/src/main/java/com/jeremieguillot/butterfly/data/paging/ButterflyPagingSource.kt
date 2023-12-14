@@ -23,7 +23,7 @@ class ButterflyPagingSource(
             LoadResult.Page(
                 data = response.items.map { it.toDomainModel() },
                 prevKey = if (nextPageNumber == STARTING_PAGE_INDEX) null else nextPageNumber,
-                nextKey = response.page + 1
+                nextKey = (response.page + 1).takeIf { it <= response.totalPages }
             )
         } catch (exception: IOException) {
             LoadResult.Error(exception)
