@@ -44,6 +44,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
@@ -51,15 +52,19 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
+import com.jeremieguillot.butterfly.R
 import com.jeremieguillot.butterfly.presentation._nav.HomeScreenNavArgs
 import com.jeremieguillot.butterfly.presentation.destinations.DetailScreenDestination
 import com.jeremieguillot.butterfly.presentation.home.composable.ButterflyCard
+import com.jeremieguillot.butterfly.presentation.home.composable.HorizontalCategoryList
 import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.annotation.RootNavGraph
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
 
+@RootNavGraph(start = true)
 @Destination(
     navArgsDelegate = HomeScreenNavArgs::class
 )
@@ -125,11 +130,11 @@ fun HomeScreen(
                                 value = searchText,
                                 onValueChange = { searchText = it },
                                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
-                            keyboardActions = KeyboardActions(onSearch = {
-                                onEvent(HomeContract.Event.SearchButterflies(searchText))
-                            }),
+                                keyboardActions = KeyboardActions(onSearch = {
+                                    onEvent(HomeContract.Event.SearchButterflies(searchText))
+                                }),
 
-                            modifier = Modifier
+                                modifier = Modifier
                                     .fillMaxWidth()
                                     .padding(end = 16.dp)
                                     .focusRequester(focusRequester),
@@ -140,7 +145,7 @@ fun HomeScreen(
                             }
                         }
                     } else {
-                        Text(text = state.title)
+                        Text(text = stringResource(id = R.string.app_name))
                     }
                 },
                 actions = {
@@ -161,33 +166,37 @@ fun HomeScreen(
         snackbarHost = { SnackbarHost(snackbarHostState) },
     ) {
         val butterfly = state.filteredButterflies.collectAsLazyPagingItems()
-
         if (!state.isViewLoading) {
-            LazyVerticalGrid(
-                columns = GridCells.Fixed(2),
-                modifier = Modifier.padding(it),
-                verticalArrangement = Arrangement.spacedBy(16.dp),
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
-                contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
-            ) {
+            Column(modifier = Modifier.padding(it)) {
+                HorizontalCategoryList {
+                    onEvent(HomeContract.Event.ButterflyCategorySelected(it))
+                }
 
-                if (butterfly.loadState.refresh is LoadState.Loading) {
-                    item {
-                        CircularProgressIndicator()
-                    }
-                } else {
+                LazyVerticalGrid(
+                    columns = GridCells.Fixed(2),
+                    verticalArrangement = Arrangement.spacedBy(16.dp),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
+                ) {
 
-                    items(butterfly.itemCount) { index ->
-                        val item = butterfly[index] ?: return@items
-
-                        ButterflyCard(
-                            modifier = Modifier
-                                .fillMaxWidth(),
-                            butterfly = item
-                        ) {
-                            navigator.navigate(DetailScreenDestination(item))
+                    if (butterfly.loadState.refresh is LoadState.Loading) {
+                        item {
+                            CircularProgressIndicator()
                         }
-                        Spacer(modifier = Modifier.height(16.dp))
+                    } else {
+
+                        items(butterfly.itemCount) { index ->
+                            val item = butterfly[index] ?: return@items
+
+                            ButterflyCard(
+                                modifier = Modifier
+                                    .fillMaxWidth(),
+                                butterfly = item
+                            ) {
+                                navigator.navigate(DetailScreenDestination(item))
+                            }
+                            Spacer(modifier = Modifier.height(16.dp))
+                        }
                     }
                 }
             }

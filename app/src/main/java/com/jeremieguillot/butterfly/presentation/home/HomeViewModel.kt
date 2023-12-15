@@ -7,9 +7,8 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jeremieguillot.butterfly.domain.interactors.GetButterflies
-import com.jeremieguillot.butterfly.presentation._nav.HomeScreenNavArgs
 import com.jeremieguillot.butterfly.presentation.data.Result
-import com.jeremieguillot.butterfly.presentation.navArgs
+import com.jeremieguillot.butterfly.presentation.home.composable.ButterflyCategory
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.launchIn
@@ -29,17 +28,21 @@ class HomeViewModel @Inject constructor(
     val errorEvents = _errorEvents.receiveAsFlow()
 
     init {
-        val navArgs: HomeScreenNavArgs = savedStateHandle.navArgs()
-        requestButterflies(navArgs.family)
+        requestButterflies(ButterflyCategory.PAPILIONIDES)
     }
 
     fun onEvent(event: HomeContract.Event) {
         when (event) {
             is HomeContract.Event.SearchButterflies -> filterButterflies(event.query)
             is HomeContract.Event.ToggleSearchBar -> toggleSearchBarVisibility()
+            is HomeContract.Event.ButterflyCategorySelected -> updateSelectedCategory(event.category)
         }
     }
 
+    private fun updateSelectedCategory(category: ButterflyCategory) {
+        state = state.copy(family = category)
+        requestButterflies(category)
+    }
 
 
     private fun toggleSearchBarVisibility() {
@@ -49,15 +52,15 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private fun requestButterflies(family: String) {
-        getButterflies(family).onEach {
+    private fun requestButterflies(family: ButterflyCategory) {
+        getButterflies(family.displayName).onEach {
             state = when (it) {
                 is Result.Failure -> {
                     _errorEvents.send(HomeContract.Error.UnknownIssue)
                     state.copy(isViewLoading = false)
                 }
 
-                Result.Loading -> state.copy(isViewLoading = true, title = family)
+                Result.Loading -> state.copy(isViewLoading = true)
                 is Result.Success -> {
                     state.copy(
                         isViewLoading = false,

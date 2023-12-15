@@ -3,6 +3,7 @@ package com.jeremieguillot.butterfly.presentation.home
 import androidx.paging.PagingData
 import com.jeremieguillot.butterfly.R
 import com.jeremieguillot.butterfly.domain.model.ButterflyModel
+import com.jeremieguillot.butterfly.presentation.home.composable.ButterflyCategory
 import com.jeremieguillot.butterfly.presentation.utils.UiText
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
@@ -11,6 +12,8 @@ class HomeContract {
 
     sealed class Event {
         data class SearchButterflies(val query: String) : Event()
+        data class ButterflyCategorySelected(val category: ButterflyCategory) : Event()
+
         object ToggleSearchBar : Event()
     }
 
@@ -24,7 +27,7 @@ class HomeContract {
 
     data class State(
         val isViewLoading: Boolean = true,
-        val title: String = "",
+        val family: ButterflyCategory = ButterflyCategory.PAPILIONIDES,
         val isSearchBarVisible: Boolean = false,
         val butterflies: Flow<PagingData<ButterflyModel>> = flowOf(),
         val filteredButterflies: Flow<PagingData<ButterflyModel>> = flowOf(),
