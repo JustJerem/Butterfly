@@ -31,6 +31,7 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
@@ -39,6 +40,7 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.jeremieguillot.butterfly.R
 import com.jeremieguillot.butterfly.domain.model.ImageInfo
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -80,6 +82,8 @@ fun ZoomableImage(
             )
     ) {
 
+        val holder = painterResource(R.drawable.ic_launcher_foreground)
+
         AsyncImage(
             ImageRequest.Builder(LocalContext.current)
                 .data(imageInfo.filePath)
@@ -87,6 +91,9 @@ fun ZoomableImage(
                 .build(),
             contentDescription = contentDescription,
             contentScale = ContentScale.Fit,
+            placeholder = holder,
+            error = holder,
+            fallback = holder,
             modifier = Modifier
                 .offset { IntOffset(offsetX.roundToInt(), offsetY.roundToInt()) }
                 .graphicsLayer(

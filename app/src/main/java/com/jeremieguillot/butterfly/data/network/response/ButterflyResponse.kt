@@ -77,7 +77,8 @@ data class ButterflyResponse(
         val status = ConservationStatus.values().first { it.name == conservationStatusFrance }
         val visibleMonth = getVisibilityMonth(flightPeriod)
 
-        val thumbnail = ImageInfo(ImageCategory.PHOTO, photosLink.first(), authorName = photoAuthor)
+        val thumbnail =
+            ImageInfo(ImageCategory.PHOTO, photosLink.firstOrNull() ?: "", authorName = photoAuthor)
         val illustration =
             ImageInfo(ImageCategory.ILLUSTRATION, illustrationsLink.firstOrNull() ?: "")
         val captureDate = mapDate.toDate()

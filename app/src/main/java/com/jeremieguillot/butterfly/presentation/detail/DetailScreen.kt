@@ -56,6 +56,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -63,6 +64,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.jeremieguillot.butterfly.R
 import com.jeremieguillot.butterfly.domain.model.ButterflyModel
 import com.jeremieguillot.butterfly.domain.model.ConservationStatus
 import com.jeremieguillot.butterfly.domain.model.VisibleMonth
@@ -143,6 +145,7 @@ private fun DetailScreen(
                     butterfly.carousel.size
                 })
                 Column {
+                    val holder = painterResource(R.drawable.ic_launcher_foreground)
 
                     HorizontalPager(
                         state = pagerState,
@@ -154,6 +157,9 @@ private fun DetailScreen(
                                 .data(butterfly.carousel[page].filePath)
                                 .crossfade(true)
                                 .build(),
+                            placeholder = holder,
+                            error = holder,
+                            fallback = holder,
                             contentDescription = null,
                             contentScale = ContentScale.Crop,
                             modifier = Modifier

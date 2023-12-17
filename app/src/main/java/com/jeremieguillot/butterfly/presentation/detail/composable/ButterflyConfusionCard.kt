@@ -16,10 +16,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.jeremieguillot.butterfly.R
 import com.jeremieguillot.butterfly.domain.model.ButterflyModel
 
 @Composable
@@ -32,12 +34,16 @@ fun ButterflyConfusionCard(butterfly: ButterflyModel) {
         Box(
             modifier = Modifier.fillMaxSize(),
         ) {
+            val holder = painterResource(R.drawable.ic_launcher_foreground)
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
                     .data(butterfly.thumbnail.filePath)
                     .crossfade(true)
                     .build(),
                 contentDescription = null,
+                placeholder = holder,
+                error = holder,
+                fallback = holder,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .fillMaxSize(),

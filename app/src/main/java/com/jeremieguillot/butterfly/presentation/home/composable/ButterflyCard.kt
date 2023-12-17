@@ -16,10 +16,12 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.jeremieguillot.butterfly.R
 import com.jeremieguillot.butterfly.domain.model.ButterflyModel
 
 @Composable
@@ -32,11 +34,16 @@ fun ButterflyCard(modifier: Modifier, butterfly: ButterflyModel, onTap: () -> Un
     ) {
         Column {
 
+            val holder = painterResource(R.drawable.ic_launcher_foreground)
+
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
                     .data(butterfly.thumbnail.filePath).crossfade(true).build(),
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
+                placeholder = holder,
+                error = holder,
+                fallback = holder,
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(imageHeight)
