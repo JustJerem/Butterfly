@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -22,6 +23,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Tune
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -55,6 +57,7 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import com.jeremieguillot.butterfly.R
 import com.jeremieguillot.butterfly.presentation._nav.HomeScreenNavArgs
 import com.jeremieguillot.butterfly.presentation.destinations.DetailScreenDestination
+import com.jeremieguillot.butterfly.presentation.destinations.FilterScreenPreviewDestination
 import com.jeremieguillot.butterfly.presentation.home.composable.ButterflyCard
 import com.jeremieguillot.butterfly.presentation.home.composable.HorizontalCategoryList
 import com.ramcosta.composedestinations.annotation.Destination
@@ -149,16 +152,32 @@ fun HomeScreen(
                     }
                 },
                 actions = {
-                    IconButton(
-                        onClick = {
-                            searchText = ""
-                            onEvent(HomeContract.Event.ToggleSearchBar)
-                        }
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceEvenly
                     ) {
-                        Icon(
-                            imageVector = if (state.isSearchBarVisible) Icons.Default.Close else Icons.Default.Search,
-                            contentDescription = null
-                        )
+                        IconButton(
+                            onClick = {
+                                searchText = ""
+                                onEvent(HomeContract.Event.ToggleSearchBar)
+                            }
+                        ) {
+                            Icon(
+                                imageVector = if (state.isSearchBarVisible) Icons.Default.Close else Icons.Default.Search,
+                                contentDescription = null
+                            )
+                        }
+
+                        IconButton(
+                            onClick = {
+                                navigator.navigate(FilterScreenPreviewDestination)
+                            }
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Tune,
+                                contentDescription = null
+                            )
+                        }
                     }
                 }
             )
