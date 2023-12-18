@@ -10,7 +10,7 @@ interface ApiClient {
     suspend fun getAllButterflies(
         @Query(value = "page") page: Int = 1,
         @Query(value = "filter") filter: String,
-        @Query("sort") sort: String = "common_name"
+        @Query("sort") sort: String = "latin_name"
     ): CallResponse
 
     @GET("collections/butterfly/records")
