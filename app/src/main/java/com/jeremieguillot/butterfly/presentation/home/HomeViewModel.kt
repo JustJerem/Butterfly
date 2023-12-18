@@ -7,7 +7,16 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jeremieguillot.butterfly.domain.interactors.GetButterflies
+import com.jeremieguillot.butterfly.domain.model.ButterflyColor
+import com.jeremieguillot.butterfly.domain.model.ConservationStatus
+import com.jeremieguillot.butterfly.domain.model.Frequency
+import com.jeremieguillot.butterfly.domain.model.HabitatType
+import com.jeremieguillot.butterfly.domain.model.MonthEnum
+import com.jeremieguillot.butterfly.domain.model.ProtectionStatus
+import com.jeremieguillot.butterfly.domain.model.Region
 import com.jeremieguillot.butterfly.presentation.data.Result
+import com.jeremieguillot.butterfly.presentation.filter.CategoryType
+import com.jeremieguillot.butterfly.presentation.filter.FilterItem
 import com.jeremieguillot.butterfly.presentation.home.composable.ButterflyCategory
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
@@ -27,6 +36,18 @@ class HomeViewModel @Inject constructor(
     private val _errorEvents = Channel<HomeContract.Error>()
     val errorEvents = _errorEvents.receiveAsFlow()
 
+
+    //Filter
+
+    var selectedCategory by mutableStateOf(CategoryType.FLIGHT_MONTH)
+    var selectedFlightMonths by mutableStateOf<List<MonthEnum>>(emptyList())
+    var selectedConservationStatus by mutableStateOf<List<ConservationStatus>>(emptyList())
+    var selectedHabitatType by mutableStateOf<List<HabitatType>>(emptyList())
+    var selectedProtectionStatus by mutableStateOf<List<ProtectionStatus>>(emptyList())
+    var selectedFrequencies by mutableStateOf<List<Frequency>>(emptyList())
+    var selectedRegions by mutableStateOf<List<Region>>(emptyList())
+    var selectedColors by mutableStateOf<List<ButterflyColor>>(emptyList())
+
     init {
         requestButterflies(ButterflyCategory.PAPILIONIDES)
     }
@@ -34,12 +55,78 @@ class HomeViewModel @Inject constructor(
     fun onEvent(event: HomeContract.Event) {
         when (event) {
             is HomeContract.Event.SearchButterflies -> filterButterflies(event.query)
-            is HomeContract.Event.ToggleSearchBar -> toggleSearchBarVisibility()
-            is HomeContract.Event.ButterflyCategorySelected -> updateSelectedCategory(event.category)
+            HomeContract.Event.ToggleSearchBar -> toggleSearchBarVisibility()
+            is HomeContract.Event.ButterflyCategorySelected -> updateSelectedFamily(event.family)
+            is HomeContract.Event.SetSelectedCategory -> updateSelectedSettingCategory(event.category)
         }
     }
 
-    private fun updateSelectedCategory(category: ButterflyCategory) {
+
+    fun onItemSelected(item: FilterItem) {
+        when (item.type) {
+            CategoryType.FREQUENCY -> selectedFrequencies = updateSelectedItem(
+                Frequency.values().first { it.displayName == item.name },
+                selectedFrequencies
+            )
+
+            CategoryType.REGION -> selectedRegions = updateSelectedItem(
+                Region.values().first { it.displayName == item.name },
+                selectedRegions
+            )
+
+            else -> TODO()
+        }
+    }
+
+    fun <T> updateSelectedItem(item: T, selectedItems: List<T>): List<T> {
+        return if (selectedItems.contains(item)) {
+            selectedItems - item
+        } else {
+            selectedItems + item
+        }
+    }
+
+    fun getSelectedItems(): List<FilterItem> {
+        when (selectedCategory) {
+//            CategoryType.FLIGHT_MONTH -> return selectedFlightMonths
+//            CategoryType.CONSERVATION_STATUS -> return selectedConservationStatus
+//            CategoryType.HABITAT_TYPE -> return selectedHabitatType
+//            CategoryType.PROTECTION_STATUS -> return selectedProtectionStatus
+            CategoryType.FREQUENCY -> return Frequency.values().map { frequency ->
+                FilterItem(
+                    frequency.displayName,
+                    selectedFrequencies.contains(frequency),
+                    CategoryType.FREQUENCY
+                )
+            }
+
+            CategoryType.REGION -> return Region.values().map { frequency ->
+                FilterItem(
+                    frequency.displayName,
+                    selectedRegions.contains(frequency),
+                    CategoryType.FREQUENCY
+                )
+            }
+//            CategoryType.BUTTERFLY_COLOR -> return selectedColors
+            else -> TODO()
+        }
+    }
+
+    private fun updateSelectedSettingCategory(category: CategoryType) {
+        selectedCategory = category
+    }
+
+    private fun onResetFilter() {
+        selectedFlightMonths = emptyList()
+        selectedConservationStatus = emptyList()
+        selectedHabitatType = emptyList()
+        selectedProtectionStatus = emptyList()
+        selectedFrequencies = emptyList()
+        selectedRegions = emptyList()
+        selectedColors = emptyList()
+    }
+
+    private fun updateSelectedFamily(category: ButterflyCategory) {
         state = state.copy(family = category)
         requestButterflies(category)
     }

@@ -57,7 +57,7 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import com.jeremieguillot.butterfly.R
 import com.jeremieguillot.butterfly.presentation._nav.HomeScreenNavArgs
 import com.jeremieguillot.butterfly.presentation.destinations.DetailScreenDestination
-import com.jeremieguillot.butterfly.presentation.destinations.FilterScreenDestination
+import com.jeremieguillot.butterfly.presentation.destinations.FilterCategoryScreenDestination
 import com.jeremieguillot.butterfly.presentation.home.composable.ButterflyCard
 import com.jeremieguillot.butterfly.presentation.home.composable.HorizontalCategoryList
 import com.ramcosta.composedestinations.annotation.Destination
@@ -80,6 +80,7 @@ fun HomeScreen(
 }
 
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
     state: HomeContract.State,
@@ -169,7 +170,7 @@ fun HomeScreen(
 
                         IconButton(
                             onClick = {
-                                navigator.navigate(FilterScreenDestination)
+                                navigator.navigate(FilterCategoryScreenDestination)
                             }
                         ) {
                             Icon(
